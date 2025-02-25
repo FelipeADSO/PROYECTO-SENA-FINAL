@@ -1,0 +1,42 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+ 
+ {% block content %}
+<body>
+    
+    
+    <div class="somos mt-5">
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <div class="card shadow-sm p-4">
+                    <h2 class="text-secondary" style="color: black;">Misión</h2>
+                    <p class="text-dark">Ofrecer productos y servicios de alta calidad que satisfagan las necesidades de nuestros clientes, basados en principios de ética, innovación y respeto al entorno.</p>
+                </div>
+            </div>      
+            <div class="col-md-6">
+                <div class="card shadow-sm p-4">
+                    <h2 class="text-secondary" style="color: #fff;">Visión</h2>
+                    <p class="text-dark">Ser una empresa líder en innovación y sostenibilidad, contribuyendo al bienestar de la sociedad y el medio ambiente, siempre comprometidos con la excelencia.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container text-center mb-5">
+        <h2 class="text-danger">Ubicación</h2>
+        <p>Estamos ubicados en el Municipio de Garzón Huila. ¡Ven y disfruta del mejor cine!</p>
+        
+            <iframe src="https://www.google.com/maps/d/embed?mid=1-4NWroealP09kbqV6pR5hs2KiZDU96A&ehbc=2E312F" width="640" height="480"></iframe>
+        </div>
+    </div>  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</body>
+{% endblock %}

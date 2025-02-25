@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+        
+        {% load static %}
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'imagenes/Logo.jpeg' %}"/>
+        
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+        {% block style %}<link href="{% static 'css/style.css' %}" rel="stylesheet"/>{% endblock %}
+        
+    <!-- </head> -->
+     {% block content %}
+        
+     
+ 
+        <div class="masthead position-relative vh-100">
+            <div class="container-fluid h-100 p-0">
+                <img src="{% static 'imagenes/fondo2.jpg' %}" class="w-100 h-100 object-fit-cover position-absolute top-0 start-0" alt="Fondo">
+                <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
+                    <h1 class="masthead-subheading">Disfruta de las peliculas </h1>
+                    <h3 class="masthead-subheading">en la mejor calidad</h3>
+                    <a href="{% url 'login' %}" class="btn btn-danger btn-lg mt-3">Ver mas</a>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="js/scripts.js"></script>
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    </body>
+<!-- </html> -->
+ {% endblock %}

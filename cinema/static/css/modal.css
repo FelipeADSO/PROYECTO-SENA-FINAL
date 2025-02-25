@@ -1,0 +1,16 @@
+.page-section img {
+    width: 500px;
+    height: 550px;
+    object-fit: cover;
+}
+.modal-body img {
+    width: 400px;
+    height: 500px;
+    object-fit: cover;
+}
+.modal-body iframe{
+    width: 100%;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+}

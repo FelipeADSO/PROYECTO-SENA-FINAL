@@ -1,0 +1,465 @@
+ <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content=""/>
+    <title>Cinema Los Andes</title> 
+    {% extends 'base.html' %}
+    {% load static %}
+    
+    {% block style %}<link href="css/styles.css" rel="stylesheet" />{% endblock %}
+
+    {% block content %}
+<body>
+    <body id="page-top">
+    </section>
+    <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <h2 class="text-uppercase">After</h2>
+                                <p class="item-intro text-muted"></p>
+                                <iframe class="d-block mx-auto" width="560" height="315" src="https://www.youtube.com/embed/vwJD5Y4zpYM?si=CHsMODGZThKMyJfe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <p> La relación de Tessa Young y Hardin Scott está llena de emociones intensas, secretos oscuros y pasión. A medida que enfrentan los desafíos del amor y la confianza, descubren que su conexión puede ser tanto una bendición como un tormento.</p>
+                                <ul class="list-inline">
+                                    <div class="con" style="display: flex; flex-direction: row; justify-content: center;">
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    </div>
+                                    <li>
+                                        <strong>Categoria: Romance y drama</strong>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-danger btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                    <i class="fas fa-xmark me-1"></i>
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <h2 class="text-uppercase">Jumanji</h2>
+                                <p class="item-intro text-muted"></p>
+                                <iframe class="d-block mx-auto" width="560" height="315" src="https://www.youtube.com/embed/leIrosWRbYQ?si=vcJTKuFwaRrzx4Ue" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <p>Un grupo de amigos queda atrapado dentro de un videojuego mágico, donde deben superar desafíos y sobrevivir como los personajes que han elegido para regresar al mundo real.</p>
+                                <ul class="list-inline">
+                                    <div class="con" style="display: flex; flex-direction: row; justify-content: center;">
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    </div>
+                                    <li>
+                                        <strong>Categoria: Ciencia ficción y fantasía</strong>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-danger btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                    <i class="fas fa-xmark me-1"></i>
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <h2 class="text-uppercase">Mi villano Favorito</h2>
+                                <p class="item-intro text-muted"></p>
+                                <iframe class="d-block mx-auto" width="560" height="315" src="https://www.youtube.com/embed/I0_qFoptZ4Y?si=1jDkWGMEfb2GtmgT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <p>Gru deja su vida de villano atrás para ser un padre ejemplar, pero es reclutado por una organización secreta para detener a un nuevo supervillano. Con ayuda de Lucy y los traviesos Minions, se embarca en una divertida aventura.</p>
+                                <ul class="list-inline">
+                                    <div class="con" style="display: flex; flex-direction: row; justify-content: center;">
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    </div>
+                                    <li>
+                                        <strong>Categoria: Animación y aventuras familiares</strong>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-danger btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                    <i class="fas fa-xmark me-1"></i>
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <h2 class="text-uppercase">Moana 2</h2>
+                                <p class="item-intro text-muted"></p>
+                                <iframe class="d-block mx-auto" width="560" height="315" src="https://www.youtube.com/embed/Bk1Hf0FtR7k?si=j12mMdftuJtV52-H" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <p>Moana regresa para explorar nuevos océanos y enfrentar desafíos aún más grandes mientras lucha por proteger su tierra y descubrir más sobre sus ancestros.</p>
+                                <ul class="list-inline">
+                                    <div class="con" style="display: flex; flex-direction: row; justify-content: center;">
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    </div>
+                                    <li>
+                                        <strong>Categoria: Animación y aventuras familiares</strong>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-danger btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                    <i class="fas fa-xmark me-1"></i>
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <h2 class="text-uppercase">Predator</h2>
+                                <p class="item-intro text-muted"></p>
+                                <iframe class="d-block mx-auto" width="560" height="315" src="https://www.youtube.com/embed/7AWRZuYlEFU?si=TOTAAwyvVemBSScZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <p>Un equipo de élite en la selva se enfrenta a un cazador alienígena con tecnología avanzada que convierte su misión en un desesperado intento por sobrevivir.</p>
+                                <ul class="list-inline">
+                                    <div class="con" style="display: flex; flex-direction: row; justify-content: center;">
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    </div>
+                                    <li>
+                                        <strong>Categoria: Acción y ciencia ficción</strong>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-danger btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                    <i class="fas fa-xmark me-1"></i>
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <h2 class="text-uppercase">Rapidos Y Furiosos 10</h2>
+                                <iframe class="d-block mx-auto" width="560" height="315" src="https://www.youtube.com/embed/O5BOxn8Go8U?si=lP1FA2E41agcOBei" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <p>Dom Toretto y su familia enfrentan una nueva y poderosa amenaza que pone en peligro todo lo que han construido. Dante Reyes, hijo del narcotraficante Hernán Reyes, busca venganza por la caída de su imperio y la muerte de su padre, culpando a Dom y su equipo. Dante lanza un ataque global que desata una serie de persecuciones y enfrentamientos que llevan al límite las habilidades y lealtades de los protagonistas.</p>
+                                <ul class="list-inline">
+                                    <div class="con" style="display: flex; flex-direction: row; justify-content: center;">
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    </div>
+                                    <li>
+                                        <strong>Categoria: Acción y ciencia ficción</strong>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-danger btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                    <i class="fas fa-xmark me-1"></i>
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal7" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <h2 class="text-uppercase">narnia</h2>
+                                <p class="item-intro text-muted"></p>
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/EGReVtqijWA?si=Pzx054AlZ8YXjaRc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <p>Narnia es un mundo de fantasía creado por C. S. Lewis para su serie de novelas de fantasía infantil Las Crónicas de Narnia. En Narnia, algunos animales pueden hablar, las bestias míticas abundan y la magia es común.</p>
+                                <ul class="list-inline">
+                                    <div class="con" style="display: flex; flex-direction: row; justify-content: center;">
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    </div>
+                                    <li>
+                                        <strong>Categoria: Fantasia y ciencia ficción</strong>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                    <i class="fas fa-xmark me-1"></i>
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal8" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <h2 class="text-uppercase">El planeta de los simos</h2>
+                                <p class="item-intro text-muted"></p>
+                                <iframe class="d-block mx-auto" width="560" height="315" src="https://www.youtube.com/embed/DDWWwEiWHJw?si=nljNLN56KbuYcx9a" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <p>Will Rodman, un científico de San Francisco, está experimentando con una droga con la que espera curar la enfermedad de Alzheimer que sufre su padre. Después de que su trabajo presenta una falla, Will se convierte en el protector de un chimpancé que estuvo expuesto a la droga.</p>
+                                <ul class="list-inline">
+                                    <div class="con" style="display: flex; flex-direction: row; justify-content: center;">
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    </div>
+                                    <li>
+                                        <strong>Categoria: Aventuras y ciencia ficción</strong>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                    <i class="fas fa-xmark me-1"></i>
+                                    Cerrar
+                                </button>
+                            </div>    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal9" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="modal-body">
+                                <h2 class="text-uppercase">Soy Leyenda</h2>
+                                <p class="item-intro text-muted"></p>
+                                <iframe class="d-block mx-auto" width="560" height="315" src="https://www.youtube.com/embed/TXQ7kRnFXS4?si=JoHHzbYcCfWmOId7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                <p>En un mundo postapocalíptico, Robert Neville, un científico que parece ser el último humano vivo, lucha por encontrar una cura mientras se enfrenta a criaturas mutantes y la soledad.</p>
+                                <ul class="list-inline">
+                                    <div class="con" style="display: flex; flex-direction: row; justify-content: center;">
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star check"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    </div>
+                                    <li>
+                                        <strong>Categoria: Acción y ciencia ficción</strong>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                    <i class="fas fa-xmark me-1"></i>
+                                    Cerrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="page-section bg-light" id="portfolio">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">Peliculas</h2>
+                <h3 class="section-subheading text-muted">  </h3>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal1">
+                            <div class="portfolio-hover"  style="background-color: #0f0f0fad;"> 
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid" src="assets/peliculas/after.jpg"/>
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">After</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal2">
+                            <div class="portfolio-hover"  style="background-color: #0f0f0fad;">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid" src="assets/peliculas/jumanji.jpg" alt="..." />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">Jumanji</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal3">
+                            <div class="portfolio-hover"  style="background-color: #0f0f0fad;">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid" src="assets/peliculas/mi-villano-favorito.jpg" alt="..." />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">Mi Villano Favorito</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal4">
+                            <div class="portfolio-hover"  style="background-color: #0f0f0fad;">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid" src="assets/peliculas/moana-2.jpg" alt="..." />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">Moana 2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal5">
+                            <div class="portfolio-hover"  style="background-color: #0f0f0fad;">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid" src="assets/peliculas/predator.jpg" alt="..." />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">Predator</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal6">
+                            <div class="portfolio-hover"  style="background-color: #0f0f0fad;">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid" src="assets/peliculas/rapido-furiosos-10.jpg" alt="..." />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">Rapidos Y Furiosos 10</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal7">
+                            <div class="portfolio-hover"  style="background-color: #0f0f0fad;">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid" src="assets/peliculas/narnia.avif" alt="..." />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">Narnia</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal8">
+                            <div class="portfolio-hover"  style="background-color: #0f0f0fad;">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid" src="assets/peliculas/reino-simios.jpg" alt="..." />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">El planeta de los simios</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal9">
+                            <div class="portfolio-hover"  style="background-color: #0f0f0fad;">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid" src="assets/peliculas/soy-leyenda.jpg" alt="..." />
+                        </a>
+                        <div class="portfolio-caption">
+                            <div class="portfolio-caption-heading">Soy Leyenda</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-5">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination bg-dark">
+                <li class="page-item"><a class="page-link bg-dark" href="peliculas.html">1</a></li>
+                <li class="page-item"><a class="page-link bg-dark" href="peliculas-2.html">2</a></li>
+                <li class="page-item"><a class="page-link bg-dark" href="peliculas-3.html">Siguiente</a></li>
+                </ul>
+            </nav>
+        </div>    
+    </section>
+
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
+{% endblock %} -->
