@@ -3,8 +3,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User 
 from django.contrib import messages 
 from django.contrib.auth import authenticate, login as auth_login
-from .models import Pelicula
-from django.core.mail import send_mail
 
 
 # Create your views here.
@@ -17,9 +15,6 @@ def inicio(request):
 
 # def cartelera(request):
 #     return render(request, 'cartelera.html')
-def cartelera(request):
-    peliculas = Pelicula.objects.all()
-    return render(request, 'cartelera.html', {'peliculas': peliculas})
 
 def peliculas(request):
     return render(request, 'peliculas.html', )
@@ -28,26 +23,7 @@ def peliculas_2(request):
     return render(request, 'peliculas_2.html')
 
 def contactenos(request):
-    if request.method == "POST":
-        nombre = request.POST.get("nombre")
-        email = request.POST.get("email")
-        telefono = request.POST.get("telefono")
-        mensaje = request.POST.get("mensaje")
-
-        mensaje_completo = f"Nombre: {nombre}\nCorreo: {email}\nTeléfono: {telefono}\n\nMensaje:\n{mensaje}"
-
-        send_mail(
-            subject="Nuevo mensaje de contacto",
-            message=mensaje_completo,
-            from_email="andrescediel070625@gmail.com", 
-            recipient_list=["andrescediel070625@gmail.com"],  
-            fail_silently=False,
-        )
-
-        messages.success(request, "Tu mensaje ha sido enviado con éxito.")
-        return redirect("contactenos")
-
-    return render(request, "contactenos.html")
+    return render(request, 'contactenos.html')
 
 def somos(request):
     return render(request, 'somos.html')

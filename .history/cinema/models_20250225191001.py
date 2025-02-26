@@ -44,4 +44,5 @@ class Pelicula(models.Model):
         verbose_name_plural = "Películas"
 
 
+
   

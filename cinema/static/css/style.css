@@ -11248,6 +11248,8 @@ header.masthead .masthead-heading {
   height: 600px;
 }
 
-.somos {
+.somos img {
+  width: 250px;
+  height: 200px;
   
 }
