@@ -1,28 +1,24 @@
-from django.shortcuts import render
-from django.shortcuts import render, redirect 
-from django.contrib.auth.models import User 
-from django.contrib import messages 
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login
-from .models import Pelicula
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from .models import Pelicula, Perfil
 
-
-# Create your views here.
- 
 def home(request):
     return render(request, 'home.html')
 
 def inicio(request):
     return render(request, 'inicio.html')
 
-# def cartelera(request):
-#     return render(request, 'cartelera.html')
 def cartelera(request):
     peliculas = Pelicula.objects.all()
     return render(request, 'cartelera.html', {'peliculas': peliculas})
 
 def peliculas(request):
-    return render(request, 'peliculas.html', )
+    return render(request, 'peliculas.html')
 
 def peliculas_2(request):
     return render(request, 'peliculas_2.html')
@@ -34,26 +30,23 @@ def contactenos(request):
         telefono = request.POST.get("telefono")
         mensaje = request.POST.get("mensaje")
 
-        mensaje_completo = f"Nombre: {nombre}\nCorreo: {email}\nTeléfono: {telefono}\n\nMensaje:\n{mensaje}"
+        mensaje_completo = f"Nombre: {nombre}\nCorreo: {email}\nTeléfono: {telefono}\n\nMensaje:\n{mensaje}"
 
         send_mail(
             subject="Nuevo mensaje de contacto",
             message=mensaje_completo,
-            from_email="andrescediel070625@gmail.com", 
-            recipient_list=["andrescediel070625@gmail.com"],  
+            from_email="andrescediel070625@gmail.com",
+            recipient_list=["andrescediel070625@gmail.com"],
             fail_silently=False,
         )
 
-        messages.success(request, "Tu mensaje ha sido enviado con éxito.")
+        messages.success(request, "Tu mensaje ha sido enviado con éxito.")
         return redirect("contactenos")
 
     return render(request, "contactenos.html")
 
 def somos(request):
     return render(request, 'somos.html')
-
-# def estrenos(request):
-#     return render(request, 'estrenos.html')
 
 def register(request):
     if request.method == 'POST':
@@ -74,7 +67,7 @@ def register(request):
             if user is not None:
                 auth_login(request, user)
                 messages.success(request, "¡Registro exitoso! Te has registrado.")
-                return redirect('login')  # Redirige a la página principal o dashboard
+                return redirect('inicio')
 
     return render(request, 'register.html')
 
@@ -84,10 +77,27 @@ def login(request):
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            auth_login(request, user)  # Usa auth_login en lugar de login para evitar conflictos
+            auth_login(request, user)
             messages.success(request, f"¡Bienvenido, {user.username}!")
-            return redirect("inicio")  # Reemplaza "home" con la URL de tu página de inicio
+            return redirect("inicio")
         else:
             messages.error(request, "Usuario o contraseña incorrectos.")
     
     return render(request, "login.html")
+
+@login_required
+def perfil(request):
+    user_profile, created = Perfil.objects.get_or_create(user=request.user)
+    return render(request, "perfil.html", {"user_profile": user_profile, "user": request.user})
+
+@login_required
+def user_info(request):
+    user_profile, created = Perfil.objects.get_or_create(user=request.user)
+    data = {
+        "username": request.user.username,
+        "email": request.user.email,
+        "date_joined": request.user.date_joined.strftime("%d/%m/%Y"),
+        "phone": user_profile.phone if user_profile.phone else "No registrado",
+        "profile_picture": user_profile.profile_picture.url if user_profile.profile_picture else "/static/imagenes/perfil.jpg"
+    }
+    return JsonResponse(data)

@@ -144,3 +144,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "andrescediel070625@gmail.com"  
 EMAIL_HOST_PASSWORD = "vdeu zmnm raxv gdjy"
+
+LOGIN_REDIRECT_URL = '/perfil/'
+
