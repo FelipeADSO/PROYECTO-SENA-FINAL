@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User 
 from django.contrib import messages 
 from django.contrib.auth import authenticate, login as auth_login
-from .models import Pelicula
 
 
 # Create your views here.
@@ -17,7 +16,7 @@ def inicio(request):
 # def cartelera(request):
 #     return render(request, 'cartelera.html')
 def cartelera(request):
-    peliculas = Pelicula.objects.all()
+    peliculas = pelicula.objects.all()
     return render(request, 'cartelera.html', {'peliculas': peliculas})
 
 def peliculas(request):

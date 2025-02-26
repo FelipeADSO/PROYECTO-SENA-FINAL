@@ -2,8 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect 
 from django.contrib.auth.models import User 
 from django.contrib import messages 
-from django.contrib.auth import authenticate, login as auth_login
-from .models import Pelicula
+from django.contrib.auth import authenticate, login as auth_login,
 
 
 # Create your views here.
