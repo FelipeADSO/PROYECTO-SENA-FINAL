@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Reservas - Chocolate Mamá Susana{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/reservas.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-card reservas-card">
+        <div class="login-image" style="background-image: url('{% static 'imagenes/Logo.jpg' %}');">
+
+            <div class="login-quote">
+                <h3>Disfruta de nuestros deliciosos chocolates en una experiencia inolvidable</h3>
+            </div>
+        </div>
+        <div class="login-form reservas-form">
+            <div class="login-logo">
+                <img src="{% static 'img/logo_mama_susana.png' %}">
+            </div>
+            <div class="login-header">
+                <h2>Reservas</h2>
+                <p>Hola {{ nombre }} {{ apellido }}, completa el formulario para hacer tu reserva</p>
+            </div>
+            
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <form method="POST" action="{% url 'reservas' %}">
+                {% csrf_token %}
+                
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" id="id_fecha" name="fecha" required min="{{ today|date:'Y-m-d' }}">
+                    <label for="id_fecha">Fecha de Reserva</label>
+                </div>
+                
+                <div class="form-floating mb-3">
+                    <input type="time" class="form-control" id="id_hora" name="hora" required>
+                    <label for="id_hora">Hora de Reserva</label>
+                </div>
+                
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="id_personas" name="personas" min="1" max="20" value="2" required>
+                    <label for="id_personas">Número de Personas</label>
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label class="productos-label">Productos de interés (opcional):</label>
+                    <div class="productos-container">
+                        {% for producto in form.productos.field.queryset %}
+                        <div class="producto-item">
+                            <input type="checkbox" id="producto_{{ producto.id }}" name="productos" value="{{ producto.id }}" 
+                                   {% if producto in form.productos.value %}checked{% endif %}>
+                            <label for="producto_{{ producto.id }}">
+                                {{ producto.nombre }} - ${{ producto.precio }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="form-floating mb-3">
+                    <textarea class="form-control" id="id_mensaje" name="mensaje" rows="3" placeholder="Mensaje adicional"></textarea>
+                    <label for="id_mensaje">Mensaje adicional (opcional)</label>
+                </div>
+
+                <button type="submit" class="btn btn-dynamic">
+                    Confirmar Reserva <span class="btn-icon"><i class="fas fa-calendar-check"></i></span>
+                </button>
+            </form>
+            
+            <!-- Reservas anteriores -->
+            {% if reservas_previas %}
+            <div class="reservas-previas mt-4">
+                <h4>Tus reservas anteriores</h4>
+                <div class="accordion" id="accordionReservas">
+                    {% for reserva in reservas_previas %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#collapse{{ reserva.id }}">
+                                {{ reserva.fecha|date:"d/m/Y" }} - {{ reserva.hora|time:"H:i" }} 
+                                <span class="badge ms-2 {% if reserva.estado == 'confirmada' %}bg-success{% elif reserva.estado == 'cancelada' %}bg-danger{% else %}bg-warning{% endif %}">
+                                    {{ reserva.estado|title }}
+                                </span>
+                            </button>
+                        </h2>
+                        <div id="collapse{{ reserva.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionReservas">
+                            <div class="accordion-body">
+                                <p><strong>Personas:</strong> {{ reserva.personas }}</p>
+                                {% if reserva.productos.all %}
+                                <p><strong>Productos:</strong></p>
+                                <ul>
+                                    {% for producto in reserva.productos.all %}
+                                    <li>{{ producto.nombre }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                                {% if reserva.mensaje %}
+                                <p><strong>Mensaje:</strong> {{ reserva.mensaje }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Set the minimum date to today
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('id_fecha').setAttribute('min', today);
+    });
+</script>
+{% endblock %}

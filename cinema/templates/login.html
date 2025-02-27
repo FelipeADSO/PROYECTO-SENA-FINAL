@@ -90,7 +90,12 @@
                     <input type="password" name="password" class="form-control cine-input" placeholder="Ingrese su contraseña" required>
                 </div>
 
+                <a href="{% url 'restablecer' %}" style="text-decoration: none;">Olvidaste tu contraseña?
+                </a>
+
                 <button type="submit" class="btn cine-btn w-100">Ingresar</button>
+
+
 
                 <p class="text-center mt-3">
                     ¿No tienes cuenta? <a href="{% url 'register' %}" class="cine-link">Regístrate aquí</a>

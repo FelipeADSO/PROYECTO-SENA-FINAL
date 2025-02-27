@@ -19,6 +19,9 @@ urlpatterns = [
     path('api/user-info/', views.user_info, name="user_info"),
     path('register', views.register, name='register'),
     path('logout/', LogoutView.as_view(next_page='inicio'), name='logout'),
+    path('restablecer/', views.restablecer, name='restablecer'),
+    path("cambiar_contraseña/<uidb64>/<token>/", views.cambiar_contraseña, name="cambiar_contraseña"),
+    path("password_changed/", views.password_changed, name="password_changed"),
 ]
 
 if settings.DEBUG:

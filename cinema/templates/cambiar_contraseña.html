@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cambiar Contraseña</title>
+    <link rel="stylesheet" href="{% static 'css/cambiar.css' %}">
+</head>
+<body>
+
+    <h2>Ingresa tu nueva contraseña</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="password" name="password" placeholder="Nueva contraseña" required>
+        <button type="submit">Guardar</button>
+    </form>
+
+</body>
+</html>

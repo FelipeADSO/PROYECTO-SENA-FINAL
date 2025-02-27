@@ -47,9 +47,9 @@
                        data-bs-toggle="dropdown" aria-expanded="false">
                         Contáctenos
                     </a>
-                    <ul class="dropdown-menu" style="background-color: rgba(255, 0, 0, 0.801);" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="{% url 'somos' %}" style="color: white;">Quienes Somos</a></li>
-                        <li><a class="dropdown-item" href="{% url 'contactenos' %}" style="color: white;">Contactenos</a></li>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="{% url 'somos' %}">Quienes Somos</a></li>
+                        <li><a class="dropdown-item" href="{% url 'contactenos' %}">Contactenos</a></li>
                     </ul>
                 </li>
 
@@ -60,43 +60,14 @@
                                 style="font-size: 14px; background-color: rgba(255, 0, 0, 0.801); border-radius: 15px;">
                                 {{ message }}
                             </span>
-                        </li><li class="nav-item dropdown ">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" 
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                       <i class="fa-regular fa-user" style="color: #fff; font-size: 18px;"></i>
-                    </a>
-                    <ul class="dropdown-menu" style="background-color: rgba(255, 0, 0, 0.801);" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="{% url 'somos' %}" style="color: white;">Quienes Somos</a></li>
-                        <li><a class="dropdown-item" href="{% url 'contactenos' %}" style="color: white;">Contactenos</a></li>
-                    </ul>
-                </li>
+                        </li>
                     {% endfor %}
                 {% endif %}
-
-                <div class="iconos_2">
-                    <div class="dropdown">
-                        <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-user"></i>
-                        </a>
-                
-                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                            {% if not user.is_authenticated %}
-                                <li><a class="dropdown-item" href="{% url 'login' %}">Inicio / Registro</a></li>
-                            {% else %}
-                                <li><a class="dropdown-item" href="{% url 'perfil' %}">Perfil de Usuario</a></li>
-                                <li>
-                                    <form method="post" action="{% url 'logout' %}" class="d-inline">
-                                        {% csrf_token %}
-                                        <button type="submit" class="dropdown-item">Cerrar Sesión</button>
-                                    </form>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </div>       
+                </ul>
             </div>
         </div>
     </nav>
+
 
 
     <!-- CONTENIDO -->

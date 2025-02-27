@@ -51,6 +51,27 @@ class Perfil(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+class Reserva(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    fecha = models.DateField()
+    hora = models.TimeField()
+    personas = models.IntegerField()
+    productos = models.ManyToManyField(Pelicula, blank=True)
+    estado = models.CharField(max_length=20, choices=[
+        ('pendiente', 'Pendiente'),
+        ('confirmada', 'Confirmada'),
+        ('cancelada', 'Cancelada')
+    ], default='pendiente')
+    mensaje = models.TextField(blank=True, null=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ['fecha', 'hora']
+    
+    def __str__(self):
+        return f"Reserva de {self.usuario.username} - {self.fecha} {self.hora}"
+
 
 
 

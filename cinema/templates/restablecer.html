@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restablecer Contraseña</title>
+    <link rel="stylesheet" href="{% static 'css/restablecer.css' %}">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Restablecer contraseña</h2>
+        <p>Introduce tu correo electrónico registrado y te enviaremos un enlace para restablecer tu contraseña.</p>
+
+        <!-- Bloque para mostrar mensajes -->
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form action="{% url 'restablecer' %}" method="POST">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="Correo electrónico" required>
+            <br>
+            <button type="submit">Enviar enlace</button>
+        </form>
+    </div>
+
+</body>
+</html>
+    
