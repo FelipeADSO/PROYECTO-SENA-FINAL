@@ -16,6 +16,7 @@ urlpatterns = [
     path('login', views.login, name='login'),
     path('somos', views.somos, name='somos'),
     path('perfil/', views.perfil, name="perfil"),
+    path('reserva/', views.reserva, name="reserva"),
     path('api/user-info/', views.user_info, name="user_info"),
     path('register', views.register, name='register'),
     path('logout/', LogoutView.as_view(next_page='inicio'), name='logout'),

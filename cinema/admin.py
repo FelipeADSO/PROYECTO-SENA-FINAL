@@ -11,7 +11,6 @@ class PeliculaAdmin(admin.ModelAdmin):
 
 admin.site.register(Pelicula, PeliculaAdmin)
 
-
 class ReservaAdmin(admin.ModelAdmin):
     list_display = ('id', 'usuario', 'fecha', 'hora', 'personas', 'estado', 'fecha_creacion')
     list_filter = ('estado', 'fecha')

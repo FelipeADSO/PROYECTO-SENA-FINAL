@@ -65,12 +65,6 @@ class Reserva(models.Model):
     ], default='pendiente')
     mensaje = models.TextField(blank=True, null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        unique_together = ['fecha', 'hora']
-    
-    def __str__(self):
-        return f"Reserva de {self.usuario.username} - {self.fecha} {self.hora}"
 
 
 
