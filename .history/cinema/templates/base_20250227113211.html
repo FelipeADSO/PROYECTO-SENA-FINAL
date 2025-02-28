@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Cinema Los Andes</title>
+
+    <link rel="shortcut icon" type="image/x-icon" href="{% static '/static/imagenes/Logo.jpeg' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    
+    
+    <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+    {% block style %} {% endblock %}
+</head>
+
+<body class="bg-dark text-white d-flex flex-column min-vh-100">
+
+    <!-- MENÚ NAVBAR REDUCIDO -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" 
+    style="background-color: rgba(255, 0, 0, 0.9); font-size: 11px; padding: 8px 0;">
+    <div class="container d-flex align-items-center">
+        <a href="{% url 'inicio' %}">
+            <img src="{% static 'imagenes/logo.jpeg' %}" alt="Logo" 
+                style="width: 50px; height: 50px; margin-right: 10px; border-radius: 50px;">
+        </a>
+        <a class="navbar-brand fw-bold" style="color: #fff; font-size: 20px;" href="{% url 'inicio' %}">
+            Cinema Los Andes
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" 
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars ms-1"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav text-uppercase ms-auto py-2">
+                <li class="nav-item"><a class="nav-link px-2" href="{% url 'inicio' %}">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link px-2" href="{% url 'cartelera' %}">Cartelera</a></li>
+                <li class="nav-item"><a class="nav-link px-2" href="{% url 'peliculas' %}">Películas</a></li>
+
+                <!-- Menú Desplegable -->
+                <li class="nav-item dropdown ">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" 
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Contáctenos
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="{% url 'somos' %}">Quienes Somos</a></li>
+                        <li><a class="dropdown-item" href="{% url 'contactenos' %}">Contactenos</a></li>
+                    </ul>
+                </li>
+
+                {% if user.is_authenticated %}
+    <li class="nav-item">
+                <span class="alert mb-0 text-white px-2 py-1 rounded" style="font-size: 14px; background-color: rgba(255, 0, 0, 0.801); border-radius: 15px;">
+            ¡Bienvenido, {{ user.username }}!
+            </span>
+            </li>
+            {% endif %}
+                </ul>
+
+                <div class="iconos_2">
+                    <div class="dropdown">
+                        <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-user"></i>
+                        </a>
+                
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            {% if not user.is_authenticated %}
+                            <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a></li>
+                            <li><a class="dropdown-item" href="{% url 'register' %}">Registrarse</a></li>
+                            
+                            {% else %}
+                                <li><a class="dropdown-item" href="{% url 'perfil' %}">Perfil de Usuario</a></li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                                    </form>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>       
+            </div>
+        </div>
+    </nav>
+
+
+
+    <!-- CONTENIDO -->
+    {% block content %}
+    <div class="container my-auto">
+        <!-- Aquí va el contenido de cada página -->
+    </div>
+    {% endblock %}
+
+    <!-- FOOTER REDUCIDO -->
+    <footer class="footer text-center" 
+        style="background-color: rgba(255, 0, 0, 0.9); font-size: 14px; padding: 15px 0;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="text-white">Cinema Los Andes</h5>
+                    <p class="text-white">📍 Calle 7 #9-60 Centro, Garzón</p>
+                    <p class="text-white">📞 3208497878</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="text-white">Información</h5>
+                    <p class="text-white">📧 cinemalosandes@gmail.com</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="text-white">Síguenos</h5>
+                    <div class="d-flex justify-content-center gap-2">
+                        <a href="https://facebook.com/cinemalosandes" target="_blank">
+                            <i class="fab fa-facebook" style="color: #fff; font-size: 18px;"></i>
+                        </a>
+                        <a href="mailto:contacto@cinemalosandes.com">
+                            <i class="fas fa-envelope" style="color: #fff; font-size: 18px;"></i>
+                        </a>
+                        <a href="https://instagram.com/cinemalosandes" target="_blank">
+                            <i class="fab fa-instagram" style="color: #fff; font-size: 18px;"></i>
+                        </a>
+                    </div>
+                    <a href="https://wa.me/573208497878" target="_blank" 
+                        style="color: #fff; text-decoration: none; font-size: 14px;">
+                        <i class="fab fa-whatsapp" style="color: #fff; font-size: 18px; margin-right: 5px;"></i> Chatea Con Nosotros
+                    </a>
+                </div>
+            </div>
+            <p class="text-white mt-3" style="font-size: 12px;">
+                &copy; 2024 Cinema Los Andes. Todos los derechos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    
+</body>
+</html>
