@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block style %} <link href="{% static 'css/style.css' %}" rel="stylesheet"/> {% endblock %}
+{% block style %}
+<link href="{% static 'css/style.css' %}" rel="stylesheet"/>
 <style>
+  /* Estilos del cuerpo de las modales */
   .modal-body {
     text-align: center;
   }
@@ -24,7 +26,35 @@
     height: 315px;
     margin-bottom: 15px;
   }
+
+  /* Estilos del botón de reservar */
+  .btn-reservar {
+    display: inline-block;
+    background: #dc3545;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    margin-top: 20px;
+  }
+
+  .btn-reservar:hover {
+    background: #bb2d3b;
+    transform: scale(1.05);
+  }
+
+  /* Icono dentro del botón */
+  .btn-reservar i {
+    font-size: 16px;
+  }
 </style>
+{% endblock %}
 
 {% block content %}
   
@@ -72,7 +102,7 @@
       <div class="container">
           <div class="text-center">
               <h2 class="section-heading" style="color: #fff;">Cartelera De Esta Semana</h2>
-              <h3 class="section-subheading text-muted"> </h3>
+              <h3 class="section-subheading text-muted"></h3>
           </div>
           <div class="row">
               {% for pelicula in peliculas %}
@@ -92,8 +122,15 @@
               {% endfor %}
           </div>
       </div> 
+      <div class="container text-center mt-4" >
+        <a href="{% url 'reserva' %}" style="background-color:  rgba(255, 0, 0, 0.9);" class="btn btn-reservar">
+            <i  class="fas fa-ticket-alt me-2"></i> Reservar Ahora
+        </a>
+    </div>
   </section>
-  <a href="{% url 'reserva' %}" class="btn btn-danger btn-lg mt-3">Reservar peliculas</a>
+
+  <!-- Botón de Reservar centrado -->
+  
   
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/scripts.js"></script>

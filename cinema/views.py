@@ -24,26 +24,42 @@ def cartelera(request):
     peliculas = Pelicula.objects.all()
     return render(request, "cartelera.html", {"peliculas": peliculas})
 
+from django.contrib.auth.decorators import login_required
+from datetime import datetime
+from .models import Reserva, Pelicula
+
+@login_required
 def reserva(request):
+    peliculas = Pelicula.objects.all()  # Obtener todas las películas para mostrar en el formulario
+
     if request.method == "POST":
         nombre = request.POST.get("nombre")
         email = request.POST.get("email")
         fecha = request.POST.get("fecha")
+        hora = request.POST.get("hora")
         personas = request.POST.get("personas")
+        pelicula_id = request.POST.getlist("peliculas")  # Puede ser una lista de películas
 
-        if nombre and email and fecha and personas:
-            Reserva.objects.create(
-                nombre=nombre,
-                email=email,
-                fecha=fecha,
-                personas=int(personas)
-            )
-            messages.success(request, "Reserva realizada con éxito.")
-            return redirect("cartelera")
+        if nombre and email and fecha and hora and personas:
+            try:
+                reserva = Reserva.objects.create(
+                    usuario=request.user,  # Asignamos el usuario autenticado
+                    fecha=datetime.strptime(fecha, "%Y-%m-%d").date(),
+                    hora=datetime.strptime(hora, "%H:%M").time(),
+                    personas=int(personas),
+                    estado="pendiente",
+                )
+                reserva.productos.set(Pelicula.objects.filter(id__in=pelicula_id))  # Asignamos las películas seleccionadas
+
+                messages.success(request, "Reserva realizada con éxito.")
+                return redirect("cartelera")
+            except Exception as e:
+                messages.error(request, f"Error al crear la reserva: {str(e)}")
         else:
             messages.error(request, "Todos los campos son obligatorios.")
-    
-    return render(request, "reserva.html")  # Asegúrate de que esta plantilla existe
+
+    return render(request, "reserva.html", {"peliculas": peliculas})
+
 
 def peliculas(request):
     return render(request, "peliculas.html")
@@ -96,7 +112,7 @@ def register(request):
             user = User.objects.create_user(username=username, email=email, password=password)
             auth_login(request, user)
             messages.success(request, "¡Registro exitoso! Bienvenido.")
-            return redirect("inicio")
+            return redirect("login")
 
     return render(request, "register.html")
 

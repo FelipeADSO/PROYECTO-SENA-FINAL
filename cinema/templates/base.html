@@ -43,14 +43,15 @@
 
                 <!-- Menú Desplegable -->
                 <li class="nav-item dropdown ">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" role="button" 
+                    <a class="nav-link dropdown-toggle text-uppercase-none" href="#" id="dropdownMenuButton" role="button" 
                        data-bs-toggle="dropdown" aria-expanded="false">
                         Contáctenos
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="text-transform: none;">
                         <li><a class="dropdown-item" href="{% url 'somos' %}">Quienes Somos</a></li>
                         <li><a class="dropdown-item" href="{% url 'contactenos' %}">Contactenos</a></li>
                     </ul>
+                    
                 </li>
 
                 {% if user.is_authenticated %}
@@ -62,10 +63,10 @@
             {% endif %}
                 </ul>
 
-                <div class="iconos_2">
+                <div class="iconos_2" style="color: #fff;">
                     <div class="dropdown">
-                        <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-user"></i>
+                        <a class="btn btn-outline-secondary dropdown-toggle" style="color: #fff;" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i style="color: #fff;" class="fa-solid fa-user"></i>
                         </a>
                 
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
@@ -103,16 +104,20 @@
         style="background-color: rgba(255, 0, 0, 0.9); font-size: 14px; padding: 15px 0;">
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <h5 class="text-white">Cinema Los Andes</h5>
+                    <p>Disfruta de las mejores películas en la mejor calidad🍿✨</p>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="text-white">Correo</h5>
+                    <p class="text-white">📧 cinemalosandes@gmail.com</p>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="text-white">Información</h5>
                     <p class="text-white">📍 Calle 7 #9-60 Centro, Garzón</p>
                     <p class="text-white">📞 3208497878</p>
                 </div>
-                <div class="col-md-4">
-                    <h5 class="text-white">Información</h5>
-                    <p class="text-white">📧 cinemalosandes@gmail.com</p>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <h5 class="text-white">Síguenos</h5>
                     <div class="d-flex justify-content-center gap-2">
                         <a href="https://facebook.com/cinemalosandes" target="_blank">
