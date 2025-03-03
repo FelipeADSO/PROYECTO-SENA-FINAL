@@ -2,6 +2,7 @@ from .models import Reserva, Pelicula
 import datetime
 from django import forms
 
+
 class ReservaForm(forms.ModelForm):
     productos = forms.ModelMultipleChoiceField(
         queryset=Pelicula.objects.all(),
@@ -37,3 +38,17 @@ class ReservaForm(forms.ModelForm):
                 raise forms.ValidationError("Ya existe una reserva para esta fecha y hora. Por favor, selecciona otro horario.")
                 
         return cleaned_data
+    
+from .models import Pedido, DetallePedido
+
+class PedidoForm(forms.ModelForm):
+    class Meta:
+        model = Pedido
+        fields = ['nombre', 'correo', 'telefono', 'comprobante']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'id': 'nombre'}),
+            'correo': forms.EmailInput(attrs={'class': 'form-control', 'id': 'correo'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control', 'id': 'telefono'}),
+            'comprobante': forms.FileInput(attrs={'class': 'form-control', 'id': 'factura'}),
+            }    
+

@@ -147,3 +147,4 @@ EMAIL_HOST_PASSWORD = "vdeu zmnm raxv gdjy"
 
 LOGIN_REDIRECT_URL = '/perfil/'
 
+

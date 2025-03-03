@@ -53,6 +53,9 @@
   .btn-reservar i {
     font-size: 16px;
   }
+  .descripcion-pelicula {
+  text-align: justify;
+  }
 </style>
 {% endblock %}
 
@@ -70,7 +73,8 @@
                               <h2 style="color: #000;">{{ pelicula.titulo }}</h2>
                               <p class="item-intro text-muted"></p>
                               <iframe class="d-block mx-auto" width="560" height="315" src="{{ pelicula.trailer_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                              <p style="color: #000;">{{ pelicula.descripcion }}</p>
+                              <p class="descripcion-pelicula" style="color: #000;">{{ pelicula.descripcion }}</p>
+                              <p style="color: #000; font-weight: bold;">Horario: {{ pelicula.horario }}</p>
                               <ul class="list-inline">
                                   <div class="con" style="display: flex; flex-direction: row; justify-content: center; color: #000;">
                                   {% for i in "12345" %}
@@ -109,7 +113,7 @@
               <div class="parra col-lg-4 col-sm-6 mb-4">
                   <div class="portfolio-item">
                       <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal{{ pelicula.id }}">
-                          <div class="portfolio-hover bg-danger">
+                          <div class="portfolio-hover" style="background-color: rgba(255, 0, 0, 0.9);">
                               <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                           </div>
                           <img class="img-fluid" src="{{ pelicula.imagen.url }}" alt="{{ pelicula.titulo }}"/>
@@ -122,11 +126,11 @@
               {% endfor %}
           </div>
       </div> 
-      <div class="container text-center mt-4" >
+        <div class="container text-center mt-4" >
         <a href="{% url 'reserva' %}" style="background-color:  rgba(255, 0, 0, 0.9);" class="btn btn-reservar">
-            <i  class="fas fa-ticket-alt me-2"></i> Reservar Ahora
+            <i  class="fas fa-ticket-alt me-2"></i> Reservar Peliculas
         </a>
-    </div>
+        </div>
   </section>
 
   <!-- Botón de Reservar centrado -->

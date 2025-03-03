@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Realizar Pago{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/pago.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<style>
+    
+
+.container {
+    background: #222;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    text-align: center;
+    width: 400px;
+}
+
+.qr-container img {
+    width: 200px;
+    margin: 20px 0;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background: #333;
+    color: white;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: #dc3545;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #bb2d3b;
+}
+
+</style>
+<div class="container">
+    <h2>Realiza tu Pago</h2>
+    <p>Escanea el código QR para realizar la transferencia y sube el comprobante.</p>
+
+    <div class="qr-container">
+        <img src="{% static 'imagenes/qr.png' %}" alt="Código QR de pago">
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="comprobante">Sube el comprobante de pago:</label>
+        {{ form.comprobante }}
+        <button type="submit" class="btn">Enviar Comprobante</button>
+    </form>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputFile = document.querySelector("input[type='file']");
+        inputFile.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                alert("Has subido el comprobante: " + file.name);
+            }
+        });
+    });
+</script>
+{% endblock %}

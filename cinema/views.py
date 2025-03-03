@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login
@@ -20,15 +21,21 @@ def password_changed(request):
 def inicio(request):
     return render(request, "inicio.html")
 
+def puestos(request):
+    return render(request, 'puestos.html')
+
 def cartelera(request):
     peliculas = Pelicula.objects.all()
     return render(request, "cartelera.html", {"peliculas": peliculas})
+
+def pasarela(request):
+    return render(request, 'pasarela.html')
 
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from .models import Reserva, Pelicula
 
-@login_required
+
 def reserva(request):
     peliculas = Pelicula.objects.all()  # Obtener todas las películas para mostrar en el formulario
 
@@ -52,7 +59,7 @@ def reserva(request):
                 reserva.productos.set(Pelicula.objects.filter(id__in=pelicula_id))  # Asignamos las películas seleccionadas
 
                 messages.success(request, "Reserva realizada con éxito.")
-                return redirect("cartelera")
+                return redirect("pasarela")
             except Exception as e:
                 messages.error(request, f"Error al crear la reserva: {str(e)}")
         else:
@@ -130,12 +137,12 @@ def login(request):
     
     return render(request, "login.html")
 
-@login_required
+
 def perfil(request):
     user_profile, created = Perfil.objects.get_or_create(user=request.user)
     return render(request, "perfil.html", {"user_profile": user_profile})
 
-@login_required
+
 def user_info(request):
     user_profile, created = Perfil.objects.get_or_create(user=request.user)
     
@@ -195,3 +202,114 @@ def cambiar_contraseña(request, uidb64, token):
 
     messages.error(request, "El enlace de restablecimiento es inválido o ha expirado.")
     return redirect("login")
+
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+
+def procesar_reserva(request):
+    if request.method == 'POST':
+        asientos = request.POST.get('asientos_seleccionados')
+        # Aquí procesas los asientos seleccionados y los guardas en la base de datos
+        return JsonResponse({'mensaje': 'Reserva procesada con éxito'})
+
+    return redirect('pasarela') 
+
+
+
+from django.http import JsonResponse
+from django.core.cache import cache
+from django.utils.html import strip_tags
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+from .models import  DetallePedido, Pelicula
+from .forms import PedidoForm
+import json
+
+def finalizar_compra(request):
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Método no permitido'})
+
+    transaction_token = request.POST.get('transaction_token')
+    cache_key = f'order_token_{transaction_token}'
+    
+    if cache.get(cache_key):
+        return JsonResponse({'success': True, 'message': 'Reserva ya procesada'})
+    
+    cache.set(cache_key, True, 30)
+    form = PedidoForm(request.POST, request.FILES)
+    
+    if not form.is_valid():
+        cache.delete(cache_key)
+        return JsonResponse({'success': False, 'errors': form.errors})
+    
+    pedido = form.save(commit=False)
+    pedido.total = request.POST.get('total', 0)
+    
+    if 'comprobante' in request.FILES:
+        pedido.comprobante = request.FILES['comprobante']
+    
+    pedido.save()
+    items = json.loads(request.POST.get('items', '[]'))
+    detalles_correo = []
+    html_items = ""
+    
+    for item in items:
+        pelicula_id = item.get('id')
+        cantidad = item.get('cantidad', 1)
+        precio = item.get('precio', 0)
+        subtotal = item.get('subtotal', 0)
+        
+        pelicula = Pelicula.objects.get(id=pelicula_id)
+        DetallePedido.objects.create(
+            pedido=pedido,
+            pelicula=pelicula,
+            cantidad=cantidad,
+            precio_unitario=precio,
+            subtotal=subtotal
+        )
+        
+        detalle = f"Película: {pelicula.nombre}, Cantidad: {cantidad}, Precio: ${precio}."
+        
+        detalles_correo.append(detalle)
+        html_items += f'<li>{detalle}</li>'
+    
+    asunto = "Confirmación de Reserva - Cinema Los Andes"
+    destinatario = pedido.correo
+    mensaje = f"""
+    Hola {pedido.nombre},
+    ¡Gracias por tu reserva en Cinema Los Andes!
+    
+    Detalles de tu reserva:
+    {''.join([f'\n- {detalle}' for detalle in detalles_correo])}
+    
+    Total: ${pedido.total}
+    Tu reserva será procesada a la brevedad.
+    
+    Saludos,
+    El equipo de Cinema Los Andes
+    """
+    
+    html_content = render_to_string('email_confirmacion.html', {
+        'pedido': pedido,
+        'html_items': html_items
+    })
+    
+    text_content = strip_tags(html_content)
+    email = EmailMultiAlternatives(
+        asunto,
+        text_content,
+        settings.EMAIL_HOST_USER,
+        [destinatario, 'andrescediel070625@gmail.com']
+    )
+    email.attach_alternative(html_content, "text/html")
+    
+    if hasattr(pedido, 'comprobante') and pedido.comprobante:
+        email.attach_file(pedido.comprobante.path)
+    
+    email.send()
+    cache.set(cache_key, True, 60 * 30)
+    
+    return JsonResponse({'success': True, 'message': 'Reserva creada correctamente y confirmación enviada por correo'})
+
+
+

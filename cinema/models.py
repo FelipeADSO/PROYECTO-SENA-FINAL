@@ -21,6 +21,8 @@ class Pelicula(models.Model):
     categoria = models.CharField(max_length=50, choices=CATEGORIAS)
     calificacion = models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])
     fecha_estreno = models.DateField(null=True, blank=True)
+    horario = models.CharField(max_length=255, null=True, blank=True)  # Permite valores nulos y vacíos
+
     
     def save(self, *args, **kwargs):
         # Convertir URL de YouTube a formato embed si es necesario
@@ -65,6 +67,33 @@ class Reserva(models.Model):
     ], default='pendiente')
     mensaje = models.TextField(blank=True, null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+class Pedido(models.Model):
+    nombre = models.CharField(max_length=100)
+    correo = models.EmailField()
+    telefono = models.CharField(max_length=20)
+    total = models.DecimalField(max_digits=10, decimal_places=0)
+    comprobante = models.ImageField(upload_to='comprobantes/', null=True, blank=True)
+    fecha_compra = models.DateTimeField(auto_now_add=True)
+    transaction_id = models.CharField(max_length=100, null=True, blank=True, unique=True)
+    estado = models.CharField(max_length=20, default='pendiente', 
+                             choices=[('pendiente', 'Pendiente'), 
+                                     ('completado', 'Completado'), 
+                                     ('cancelado', 'Cancelado')])
+
+    def _str_(self):
+        return f"Pedido de {self.nombre} - {self.fecha_compra}"
+
+class DetallePedido(models.Model):
+    pedido = models.ForeignKey(Pedido, related_name='detalles', on_delete=models.CASCADE)
+    producto = models.ForeignKey(Pelicula, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=0)
+    subtotal = models.DecimalField(max_digits=10, decimal_places=0)
+
+    def _str_(self):
+        return f"{self.cantidad} x {self.producto.nombre}"   
+
 
 
 

@@ -1,0 +1,41 @@
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #f8f9fa; padding: 10px; text-align: center; }
+        .content { padding: 20px 0; }
+        .footer { font-size: 12px; color: #6c757d; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Confirmación de Pedido - Cinema Los Andes</h2>
+        </div>
+
+        <div class="content">
+            <p>Hola {pedido.nombre},</p>
+            <p>¡Gracias por tu compra en Cinema Los Andes!</p>
+
+            <h3>Detalles de tu compra:</h3>
+            <ul>
+                {html_items}
+            </ul>
+            <p><strong>Total a pagar:</strong> ${pedido.total}</p>
+
+            <h3>Comprobante de pago:</h3>
+            <p>Hemos recibido tu comprobante de pago.</p>
+
+            <p>Estamos procesando tu pedido y pronto recibirás más información.</p>
+
+            <p>Saludos,<br><strong>El equipo de Cinema Los Andes</strong></p>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 Cinema Los Andes. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+
+</html>
