@@ -11,15 +11,13 @@ from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
 
 from .models import Pelicula, Perfil, Reserva  # Asegúrate de que Reserva esté bien definida
-
-def home(request):
-    return render(request, "home.html")
+def inicio(request):
+    return render(request, "inicio.html")
 
 def password_changed(request):
     return render(request, "password_changed.html")
 
-def inicio(request):
-    return render(request, "inicio.html")
+
 
 def puestos(request):
     return render(request, 'puestos.html')
@@ -28,44 +26,62 @@ def cartelera(request):
     peliculas = Pelicula.objects.all()
     return render(request, "cartelera.html", {"peliculas": peliculas})
 
-def pasarela(request):
-    return render(request, 'pasarela.html')
 
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-from .models import Reserva, Pelicula
+from .models import Reserva, Pelicula, CarritoItem
 
-
+@login_required
 def reserva(request):
-    peliculas = Pelicula.objects.all()  # Obtener todas las películas para mostrar en el formulario
+    peliculas = Pelicula.objects.all()
 
     if request.method == "POST":
-        nombre = request.POST.get("nombre")
-        email = request.POST.get("email")
-        fecha = request.POST.get("fecha")
-        hora = request.POST.get("hora")
-        personas = request.POST.get("personas")
-        pelicula_id = request.POST.getlist("peliculas")  # Puede ser una lista de películas
+        if 'nombre' in request.POST:
+            nombre = request.POST.get("nombre")
+            email = request.POST.get("email")
+            fecha = request.POST.get("fecha")
+            hora = request.POST.get("hora")
+            personas = request.POST.get("personas")
+            pelicula_id = request.POST.get("peliculas")
 
-        if nombre and email and fecha and hora and personas:
+            if nombre and email and fecha and hora and personas:
+                try:
+
+                    personas_int = int(personas)
+
+                    reserva = Reserva.objects.create(
+                        usuario=request.user,
+                        fecha=datetime.strptime(fecha, "%Y-%m-%d").date(),
+                        hora=datetime.strptime(hora, "%H:%M").time(),
+                        personas=personas_int, 
+                        estado="pendiente",
+                    )
+
+                    reserva.productos.set(Pelicula.objects.filter(id=pelicula_id))
+
+                    CarritoItem.objects.create(
+                        usuario=request.user if request.user.is_authenticated else None,
+                        reserva=reserva,
+                        cantidad=1,  
+                        sesion_id=request.session.session_key if not request.user.is_authenticated else None
+                    )
+                    
+                    messages.success(request, "Reserva creada y añadida al carrito con éxito")
+                    return redirect('ver_carrito')
+                except ValueError:
+                    messages.error(request, "El número de personas debe ser un valor numérico válido")
+                except Exception as e:
+                    messages.error(request, f"Error al crear la reserva: {str(e)}")
+        
+        elif 'pelicula_id' in request.POST:
+            pelicula_id = request.POST.get('pelicula_id')
             try:
-                reserva = Reserva.objects.create(
-                    usuario=request.user,  # Asignamos el usuario autenticado
-                    fecha=datetime.strptime(fecha, "%Y-%m-%d").date(),
-                    hora=datetime.strptime(hora, "%H:%M").time(),
-                    personas=int(personas),
-                    estado="pendiente",
-                )
-                reserva.productos.set(Pelicula.objects.filter(id__in=pelicula_id))  # Asignamos las películas seleccionadas
-
-                messages.success(request, "Reserva realizada con éxito.")
-                return redirect("pasarela")
-            except Exception as e:
-                messages.error(request, f"Error al crear la reserva: {str(e)}")
-        else:
-            messages.error(request, "Todos los campos son obligatorios.")
-
-    return render(request, "reserva.html", {"peliculas": peliculas})
+                pelicula = Pelicula.objects.get(id=pelicula_id)
+                messages.error(request, "Función no implementada correctamente")
+            except Pelicula.DoesNotExist:
+                messages.error(request, "Película no encontrada")
+    
+    return render(request, 'reserva.html', {'peliculas': peliculas})
 
 
 def peliculas(request):
@@ -101,12 +117,19 @@ def somos(request):
     return render(request, "somos.html")
 
 def register(request):
+    form_data = {}
+    
     if request.method == "POST":
         username = request.POST.get("username")
         email = request.POST.get("email")
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
-
+        
+        form_data = {
+            'username': username,
+            'email': email
+        }
+        
         if not username or not email or not password:
             messages.error(request, "Todos los campos son obligatorios.")
         elif password != confirm_password:
@@ -121,7 +144,7 @@ def register(request):
             messages.success(request, "¡Registro exitoso! Bienvenido.")
             return redirect("login")
 
-    return render(request, "register.html")
+    return render(request, "register.html", {'form': form_data})
 
 def login(request):
     if request.method == "POST":
@@ -221,95 +244,153 @@ from django.core.cache import cache
 from django.utils.html import strip_tags
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
-from .models import  DetallePedido, Pelicula
-from .forms import PedidoForm
+from .models import Pelicula
 import json
 
-def finalizar_compra(request):
-    if request.method != 'POST':
-        return JsonResponse({'success': False, 'message': 'Método no permitido'})
 
-    transaction_token = request.POST.get('transaction_token')
-    cache_key = f'order_token_{transaction_token}'
+
+
+from .models import CarritoItem
+def ver_carrito(request):
+    carrito_items = []
+    total = 0
     
-    if cache.get(cache_key):
-        return JsonResponse({'success': True, 'message': 'Reserva ya procesada'})
+    if request.user.is_authenticated:
+        carrito_items = CarritoItem.objects.filter(usuario=request.user)
+    else:
+        if request.session.session_key:
+            carrito_items = CarritoItem.objects.filter(sesion_id=request.session.session_key)
+
+    for item in carrito_items:
+        total += item.subtotal()
     
-    cache.set(cache_key, True, 30)
-    form = PedidoForm(request.POST, request.FILES)
-    
-    if not form.is_valid():
-        cache.delete(cache_key)
-        return JsonResponse({'success': False, 'errors': form.errors})
-    
-    pedido = form.save(commit=False)
-    pedido.total = request.POST.get('total', 0)
-    
-    if 'comprobante' in request.FILES:
-        pedido.comprobante = request.FILES['comprobante']
-    
-    pedido.save()
-    items = json.loads(request.POST.get('items', '[]'))
-    detalles_correo = []
-    html_items = ""
-    
-    for item in items:
-        pelicula_id = item.get('id')
-        cantidad = item.get('cantidad', 1)
-        precio = item.get('precio', 0)
-        subtotal = item.get('subtotal', 0)
-        
-        pelicula = Pelicula.objects.get(id=pelicula_id)
-        DetallePedido.objects.create(
-            pedido=pedido,
-            pelicula=pelicula,
-            cantidad=cantidad,
-            precio_unitario=precio,
-            subtotal=subtotal
-        )
-        
-        detalle = f"Película: {pelicula.nombre}, Cantidad: {cantidad}, Precio: ${precio}."
-        
-        detalles_correo.append(detalle)
-        html_items += f'<li>{detalle}</li>'
-    
-    asunto = "Confirmación de Reserva - Cinema Los Andes"
-    destinatario = pedido.correo
-    mensaje = f"""
-    Hola {pedido.nombre},
-    ¡Gracias por tu reserva en Cinema Los Andes!
-    
-    Detalles de tu reserva:
-    {''.join([f'\n- {detalle}' for detalle in detalles_correo])}
-    
-    Total: ${pedido.total}
-    Tu reserva será procesada a la brevedad.
-    
-    Saludos,
-    El equipo de Cinema Los Andes
-    """
-    
-    html_content = render_to_string('email_confirmacion.html', {
-        'pedido': pedido,
-        'html_items': html_items
+    return render(request, 'carrito.html', {
+        'carrito_items': carrito_items,
+        'total': total
     })
-    
-    text_content = strip_tags(html_content)
-    email = EmailMultiAlternatives(
-        asunto,
-        text_content,
-        settings.EMAIL_HOST_USER,
-        [destinatario, 'andrescediel070625@gmail.com']
-    )
-    email.attach_alternative(html_content, "text/html")
-    
-    if hasattr(pedido, 'comprobante') and pedido.comprobante:
-        email.attach_file(pedido.comprobante.path)
-    
-    email.send()
-    cache.set(cache_key, True, 60 * 30)
-    
-    return JsonResponse({'success': True, 'message': 'Reserva creada correctamente y confirmación enviada por correo'})
 
+def actualizar_carrito(request, item_id):
+    try:
+        item = CarritoItem.objects.get(id=item_id)
+        
+        if request.user.is_authenticated and item.usuario == request.user or \
+            not request.user.is_authenticated and item.sesion_id == request.session.session_key:
+            
+            cantidad = int(request.POST.get('cantidad', 1))
+            if cantidad > 0:
+                item.cantidad = cantidad
+                item.save()
+            else:
+                item.delete()
+            
+            messages.success(request, "Carrito actualizado")
+        else:
+            messages.error(request, "No tienes permiso para modificar este item")
+    except CarritoItem.DoesNotExist:
+        messages.error(request, "Item no encontrado")
+        
+    return redirect('ver_carrito')
 
+def eliminar_item(request, item_id):
+    try:
+        item = CarritoItem.objects.get(id=item_id)
+        
+        if request.user.is_authenticated and item.usuario == request.user or \
+            not request.user.is_authenticated and item.sesion_id == request.session.session_key:
+            
+            item.delete()
+            messages.success(request, "Item eliminado del carrito")
+        else:
+            messages.error(request, "No tienes permiso para eliminar este item")
+    except CarritoItem.DoesNotExist:
+        messages.error(request, "Item no encontrado")
+        
+    return redirect('ver_carrito')
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import CarritoItem, Orden, OrdenItem, Datos
+from .forms import OrdenForm
+def pasarela(request):
+    carrito_items = []
+    total = 0
+    
+    if request.user.is_authenticated:
+        carrito_items = CarritoItem.objects.filter(usuario=request.user)
+    else:
+        if request.session.session_key:
+            carrito_items = CarritoItem.objects.filter(sesion_id=request.session.session_key)
+    
+    if not carrito_items:
+        messages.warning(request, "Tu carrito está vacío")
+        return redirect('ver_carrito')
+    
+    for item in carrito_items:
+        total += item.subtotal()
+    
+    if request.method == 'POST':
+        form = OrdenForm(request.POST)
+        if form.is_valid():
+            orden = form.save(commit=False)
+            
+            if request.user.is_authenticated:
+                orden.usuario = request.user
+            else:
+                orden.sesion_id = request.session.session_key
+            
+            orden.total = total
+            orden.save()
+            
+            for item in carrito_items:
+                OrdenItem.objects.create(
+                    orden=orden,
+                    reserva=item.reserva,
+                    precio=15000,  # Precio base por persona
+                    cantidad=item.cantidad
+                )
+            
+            carrito_items.delete()
+            
+            messages.success(request, "Tu pedido ha sido procesado con éxito")
+            return redirect('confirmacion', orden_id=orden.id)
+    else:
+        initial_data = {}
+        if request.user.is_authenticated:
+            try:
+                datos = Datos.objects.get(usuario=request.user)
+                initial_data = {
+                    'nombre': f"{datos.nombre} {datos.apellido}",
+                    'email': request.user.email,
+                    'telefono': ''
+                }
+            except Datos.DoesNotExist:
+                initial_data = {
+                    'nombre': request.user.username,
+                    'email': request.user.email,
+                    'telefono': ''
+                }
+        
+        form = OrdenForm(initial=initial_data)
+    
+    return render(request, 'pasarela.html', {
+        'form': form,
+        'carrito_items': carrito_items,
+        'total': total
+    })
+
+def confirmacion(request, orden_id):
+    try:
+        if request.user.is_authenticated:
+            orden = Orden.objects.get(id=orden_id, usuario=request.user)
+        else:
+            orden = Orden.objects.get(id=orden_id, sesion_id=request.session.session_key)
+        
+        items = OrdenItem.objects.filter(orden=orden)
+        
+        return render(request, 'confirmacion.html', {
+            'orden': orden,
+            'items': items
+        })
+    except Orden.DoesNotExist:
+        messages.error(request, "Orden no encontrada")
+        return redirect('cartelera')

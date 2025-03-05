@@ -68,31 +68,51 @@ class Reserva(models.Model):
     mensaje = models.TextField(blank=True, null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
-class Pedido(models.Model):
-    nombre = models.CharField(max_length=100)
-    correo = models.EmailField()
+
+class CarritoItem(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    reserva = models.ForeignKey(Reserva, on_delete=models.CASCADE)
+    cantidad = models.IntegerField(default=1)
+    sesion_id = models.CharField(max_length=100, null=True, blank=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.cantidad} x Reserva #{self.reserva.id}"
+    
+    def subtotal(self):
+        return 15000 * self.cantidad * self.reserva.personas
+
+class Datos(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=200)
+    apellido = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.usuario.username   
+class Orden(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    nombre = models.CharField(max_length=200)
+    email = models.EmailField()
     telefono = models.CharField(max_length=20)
+    sesion_id = models.CharField(max_length=100, null=True, blank=True)
     total = models.DecimalField(max_digits=10, decimal_places=0)
-    comprobante = models.ImageField(upload_to='comprobantes/', null=True, blank=True)
-    fecha_compra = models.DateTimeField(auto_now_add=True)
-    transaction_id = models.CharField(max_length=100, null=True, blank=True, unique=True)
-    estado = models.CharField(max_length=20, default='pendiente', 
-                             choices=[('pendiente', 'Pendiente'), 
-                                     ('completado', 'Completado'), 
-                                     ('cancelado', 'Cancelado')])
+    pagado = models.BooleanField(default=False)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"Orden #{self.id} - {self.nombre}"
 
-    def _str_(self):
-        return f"Pedido de {self.nombre} - {self.fecha_compra}"
-
-class DetallePedido(models.Model):
-    pedido = models.ForeignKey(Pedido, related_name='detalles', on_delete=models.CASCADE)
-    producto = models.ForeignKey(Pelicula, on_delete=models.CASCADE)
-    cantidad = models.PositiveIntegerField(default=1)
-    precio_unitario = models.DecimalField(max_digits=10, decimal_places=0)
-    subtotal = models.DecimalField(max_digits=10, decimal_places=0)
-
-    def _str_(self):
-        return f"{self.cantidad} x {self.producto.nombre}"   
+class OrdenItem(models.Model):
+    orden = models.ForeignKey(Orden, related_name='items', on_delete=models.CASCADE)
+    reserva = models.ForeignKey(Reserva, on_delete=models.CASCADE)
+    precio = models.DecimalField(max_digits=10, decimal_places=0)
+    cantidad = models.IntegerField(default=1)
+    
+    def __str__(self):
+        return f"{self.cantidad} x Reserva #{self.reserva.id}"
+    
+    def subtotal(self):
+        return self.precio * self.cantidad
 
 
 

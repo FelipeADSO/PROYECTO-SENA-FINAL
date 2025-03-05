@@ -131,29 +131,29 @@
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" name="nombre" value="{{ request.user.first_name }}" required>
+                    <input type="text" class="form-control" name="nombre" value="{{ request.user.username }}" required>
                 </div>
                 
                 <div class="mb-3">
                     <label for="email" class="form-label">Correo Electrónico</label>
                     <input type="email" class="form-control" name="email" value="{{ request.user.email }}" required>
                 </div>
-
+            
                 <div class="mb-3">
                     <label for="fecha" class="form-label">Fecha</label>
                     <input type="date" class="form-control" name="fecha" required>
                 </div>
-
+            
                 <div class="mb-3">
                     <label for="hora" class="form-label">Hora</label>
                     <input type="time" class="form-control" name="hora" required>
                 </div>
-
+            
                 <div class="mb-3">
                     <label for="personas" class="form-label">Número de Personas</label>
                     <input type="number" class="form-control" name="personas" min="1" max="20" required>
                 </div>
-
+            
                 <div class="mb-3">
                     <label for="peliculas" class="form-label">Selecciona la película</label>
                     <select class="form-control" name="peliculas" required>
@@ -162,10 +162,9 @@
                         {% endfor %}
                     </select>
                 </div>
-
-                <button type="submit" class="btn btn-primary" style="background-color: rgba(255, 0, 0, 0.9);;">
+                
+                <button type="submit" class="btn btn-primary" style="background-color: rgba(255, 0, 0, 0.9);">
                     <i class="fas fa-ticket-alt me-2"></i>Reservar
-                    
                 </button>
             </form>
         </div>

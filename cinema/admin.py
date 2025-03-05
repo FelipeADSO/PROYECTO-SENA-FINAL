@@ -39,17 +39,31 @@ except AlreadyRegistered:
     admin.site.unregister(Reserva)
     admin.site.register(Reserva, ReservaAdmin)
 
-from .models import Pedido, DetallePedido
+from .models import CarritoItem
 
-class DetallePedidoInline(admin.TabularInline):
-    model = DetallePedido
+class CarritoItemAdmin(admin.ModelAdmin):
+    list_display = ('reserva', 'cantidad', 'usuario', 'sesion_id', 'fecha_creacion')
+    list_filter = ('fecha_creacion',)
+    search_fields = ('producto__nombre', 'usuario__username')
+
+try:
+    admin.site.register(CarritoItem, CarritoItemAdmin)
+except AlreadyRegistered:
+    pass
+
+from .models import Orden, OrdenItem
+
+class OrdenItemInline(admin.TabularInline):
+    model = OrdenItem
     extra = 0
-    readonly_fields = ('producto', 'cantidad', 'precio_unitario', 'subtotal')
+    readonly_fields = ('reserva', 'precio', 'cantidad')
 
-@admin.register(Pedido)
-class PedidoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'correo', 'telefono', 'total', 'fecha_compra', 'estado')
-    list_filter = ('estado', 'fecha_compra')
-    search_fields = ('nombre', 'correo')
-    readonly_fields = ('total',)
-    inlines = [DetallePedidoInline]    
+class OrdenAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nombre', 'email', 'telefono', 'total', 'pagado', 'fecha_creacion')
+    list_filter = ('pagado', 'fecha_creacion')
+    search_fields = ('nombre', 'email')
+
+try:
+    admin.site.register(Orden, OrdenAdmin)
+except AlreadyRegistered:
+    pass

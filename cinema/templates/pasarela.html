@@ -1,41 +1,101 @@
-<html>
-<head>
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background-color: #f8f9fa; padding: 10px; text-align: center; }
-        .content { padding: 20px 0; }
-        .footer { font-size: 12px; color: #6c757d; text-align: center; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h2>Confirmación de Pedido - Cinema Los Andes</h2>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Finalizar Compra{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/pasarela.css' %}">
+<style>
+
+ 
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="checkout-container mt-5">
+    <h1 class="checkout-titulo">Finalizar Compra</h1>
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
         </div>
-
-        <div class="content">
-            <p>Hola {pedido.nombre},</p>
-            <p>¡Gracias por tu compra en Cinema Los Andes!</p>
-
-            <h3>Detalles de tu compra:</h3>
-            <ul>
-                {html_items}
-            </ul>
-            <p><strong>Total a pagar:</strong> ${pedido.total}</p>
-
-            <h3>Comprobante de pago:</h3>
-            <p>Hemos recibido tu comprobante de pago.</p>
-
-            <p>Estamos procesando tu pedido y pronto recibirás más información.</p>
-
-            <p>Saludos,<br><strong>El equipo de Cinema Los Andes</strong></p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="checkout-grid">
+        <div class="checkout-form">
+            <h2 class="resumen-titulo">Datos de Contacto</h2>
+            <form method="POST">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="{{ form.nombre.id_for_label }}">Nombre Completo</label>
+                    {{ form.nombre }}
+                    {% if form.nombre.errors %}
+                    <div class="form-error">{{ form.nombre.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Correo Electrónico</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <div class="form-error">{{ form.email.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.telefono.id_for_label }}">Teléfono</label>
+                    {{ form.telefono }}
+                    {% if form.telefono.errors %}
+                    <div class="form-error">{{ form.telefono.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <button type="submit" class="btn btn-success">
+                    Confirmar Pedido
+                </button>
+            </form>
         </div>
-
-        <div class="footer">
-            <p>© 2025 Cinema Los Andes. Todos los derechos reservados.</p>
+        
+        <div class="checkout-resumen">
+            <h2 class="resumen-titulo">Resumen del Pedido</h2>
+            
+            {% for item in carrito_items %}
+            <div class="resumen-item">
+                <div class="resumen-producto">
+                    {% comment %}Usando una imagen genérica si no hay imagen de película{% endcomment %}
+                    {% if item.reserva.productos.first.imagen %}
+                        <img src="{{ item.reserva.productos.first.imagen.url }}" alt="Película" class="resumen-imagen">
+                    {% else %}
+                        <div style="width: 60px; height: 60px; background-color: #ddd; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #888;">IMG</div>
+                    {% endif %}
+                    <div>
+                        <div><strong>Reserva #{{ item.reserva.id }}</strong></div>
+                        <div>Película: {% if item.reserva.productos.first %}{{ item.reserva.productos.first.titulo }}{% else %}No especificada{% endif %}</div>
+                        <div>Fecha: {{ item.reserva.fecha }}</div>
+                        <div>Hora: {{ item.reserva.hora }}</div>
+                        <div>Personas: {{ item.reserva.personas }}</div>
+                        <div>Cantidad: {{ item.cantidad }}</div>
+                    </div>
+                </div>
+                <div>${{ item.subtotal }}</div>
+            </div>
+            {% endfor %}
+            
+            <div class="resumen-total">
+                Total: ${{ total }}
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <a href="{% url 'ver_carrito' %}" class="btn btn-outline">
+                    Volver al Carrito
+                </a>
+            </div>
         </div>
     </div>
-</body>
-
-</html>
+</div>
+{% endblock %}

@@ -7,9 +7,8 @@ from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),
-    path('inicio', views.inicio, name='inicio'),
-     path('pasarela/', views.pasarela, name='pasarela'),
+    path('', views.inicio, name='inicio'),
+    path('pasarela/', views.pasarela, name='pasarela'),
     path('cartelera', views.cartelera, name='cartelera'),
     path('peliculas', views.peliculas, name='peliculas'),
     path('puestos/', views.puestos, name='puestos'),
@@ -26,6 +25,10 @@ urlpatterns = [
     path('restablecer/', views.restablecer, name='restablecer'),
     path("cambiar_contraseña/<uidb64>/<token>/", views.cambiar_contraseña, name="cambiar_contraseña"),
     path("password_changed/", views.password_changed, name="password_changed"),
+    path('carrito/', views.ver_carrito, name='ver_carrito'),
+    path('carrito/actualizar/<int:item_id>/', views.actualizar_carrito, name='actualizar_carrito'),
+    path('carrito/eliminar/<int:item_id>/', views.eliminar_item, name='eliminar_item'),
+    path('confirmacion/<int:orden_id>/', views.confirmacion, name='confirmacion'),
 ]
 
 if settings.DEBUG:

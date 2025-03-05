@@ -17,7 +17,9 @@
                 <h1 class="masthead-subheading">Disfruta de las películas</h1>
                 <h3 class="masthead-subheading">en la mejor calidad</h3>
                 
-                {% if not request.user.is_authenticated %}
+                {% if user.is_authenticated %}
+                    <a href="{% url 'cartelera' %}" class="btn btn-danger btn-lg mt-3">Ver Más</a>
+                {% else %}
                     <a href="{% url 'login' %}" class="btn btn-danger btn-lg mt-3">Ver Más</a>
                 {% endif %}
             </div>

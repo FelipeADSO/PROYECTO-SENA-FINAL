@@ -1,7 +1,13 @@
 from .models import Reserva, Pelicula
 import datetime
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
+class FormularioRegistroUsuario(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ("username", "email", "password1", "password2")
 
 class ReservaForm(forms.ModelForm):
     productos = forms.ModelMultipleChoiceField(
@@ -39,16 +45,15 @@ class ReservaForm(forms.ModelForm):
                 
         return cleaned_data
     
-from .models import Pedido, DetallePedido
 
-class PedidoForm(forms.ModelForm):
+from .models import Orden
+
+class OrdenForm(forms.ModelForm):
     class Meta:
-        model = Pedido
-        fields = ['nombre', 'correo', 'telefono', 'comprobante']
+        model = Orden
+        fields = ['nombre', 'email', 'telefono']
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control', 'id': 'nombre'}),
-            'correo': forms.EmailInput(attrs={'class': 'form-control', 'id': 'correo'}),
-            'telefono': forms.TextInput(attrs={'class': 'form-control', 'id': 'telefono'}),
-            'comprobante': forms.FileInput(attrs={'class': 'form-control', 'id': 'factura'}),
-            }    
-
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tu nombre completo'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'tucorreo@ejemplo.com'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tu número de teléfono'})
+        }
