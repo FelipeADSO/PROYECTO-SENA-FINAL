@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" rel="stylesheet">
+<style>
+  /* Estilos del cuerpo de las modales */
+  .modal-body {
+    text-align: center;
+  }
+
+  .close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    z-index: 1050; /* Asegúrate de que esté sobre otros elementos */
+  }
+
+  .modal-body h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .modal-body p {
+    font-size: 16px;
+    color: #333;
+  }
+
+  .modal-body iframe {
+    width: 100%;
+    max-width: 560px;
+    height: 315px;
+    margin-bottom: 15px;
+  }
+
+  /* Estilos del botón de reservar */
+  .btn-reservar {
+    display: inline-block;
+    background: #dc3545;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    margin-top: 20px;
+  }
+
+  .btn-reservar:hover {
+    background: #bb2d3b;
+    transform: scale(1.05);
+  }
+
+  /* Icono dentro del botón */
+  .btn-reservar i {
+    font-size: 16px;
+  }
+  
+  .descripcion-pelicula {
+    text-align: justify;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  {% for pelicula in peliculas %}
+  <div class="portfolio-modal modal fade" id="portfolioModal{{ pelicula.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="close-modal" data-bs-dismiss="modal">
+                <i class="fas fa-xmark" style="font-size: 24px; color: #000;"></i>
+            </div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="modal-body">
+                            <h2 style="color: #000;">{{ pelicula.titulo }}</h2>
+                            <p class="item-intro text-muted"></p>
+                            <iframe class="d-block mx-auto" width="560" height="315" src="{{ pelicula.trailer_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <p class="descripcion-pelicula" style="color: #000;">{{ pelicula.descripcion }}</p>
+                            <p style="color: #000; font-weight: bold;">Horario: {{ pelicula.horario }}</p>
+                            <ul class="list-inline">
+                                <div class="con" style="display: flex; flex-direction: row; justify-content: center; color: #000;">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= pelicula.calificacion %}
+                                    <li><i class="fa fa-star check"></i></li>
+                                    {% else %}
+                                    <li><i class="fa fa-star"></i></li>
+                                    {% endif %}
+                                {% endfor %}
+                                </div>
+                                <li>
+                                    <strong style="color: #000;">Categoria: {{ pelicula.categoria }}</strong>
+                                </li>
+                            </ul>
+                            <button class="btn btn-danger btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
+                                <i class="fas fa-xmark me-1"></i>
+                                Cerrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  {% endfor %}
+{% endblock %}
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+
+
