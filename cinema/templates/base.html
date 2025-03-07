@@ -39,7 +39,7 @@
     <div class="container d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center">
             <a href="{% url 'inicio' %}">
-                <img src="{% static 'imagenes/logo.jpeg' %}" alt="Logo" 
+                <img src="{% static 'imagenes/Logo.jpeg' %}" alt="Logo" 
                     style="width: 50px; height: 50px; margin-right: 10px; border-radius: 50px;">
             </a>
             <a class="navbar-brand fw-bold text-white" style="font-size: 20px;" href="{% url 'inicio' %}">
@@ -90,6 +90,7 @@
             </ul>
         </div>
         
+        <!-- Dropdown para Login/Perfil en vista responsive -->
         <div class="dropdown ms-3">
             <a class="btn btn-outline-secondary dropdown-toggle text-white" href="#" role="button"
                 id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -109,9 +110,11 @@
                     </li>
                 {% endif %}
             </ul>
-        </div>        
+        </div>
+        
     </div>
 </nav>
+
 
 
     <!-- CONTENIDO -->
