@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from cinema import views
 from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import LoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -11,6 +12,7 @@ urlpatterns = [
     path('pasarela/', views.pasarela, name='pasarela'),
     path('cartelera', views.cartelera, name='cartelera'),
     path('peliculas', views.peliculas, name='peliculas'),
+    path('login/', LoginView.as_view(template_name='mi_carpeta/login.html'), name='login'),
     path('puestos/', views.puestos, name='puestos'),
     path('procesar-reserva/', views.procesar_reserva, name='procesar_reserva'),
     path('peliculas_2', views.peliculas_2, name='peliculas_2'),
