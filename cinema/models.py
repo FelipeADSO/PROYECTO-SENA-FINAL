@@ -22,8 +22,8 @@ class Pelicula(models.Model):
     calificacion = models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])
     fecha_estreno = models.DateField(null=True, blank=True)
     horario = models.CharField(max_length=255, null=True, blank=True)  # Permite valores nulos y vacíos
+    orden = models.PositiveIntegerField(default=0)  # Campo para definir el orden de las películas
 
-    
     def save(self, *args, **kwargs):
         # Convertir URL de YouTube a formato embed si es necesario
         if 'youtube.com/watch?v=' in self.trailer_url:
@@ -41,6 +41,8 @@ class Pelicula(models.Model):
     class Meta:
         verbose_name = "Película"
         verbose_name_plural = "Películas"
+        ordering = ['orden']  # Ordenar por el campo "orden" de menor a mayor
+
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -57,7 +59,7 @@ class Perfil(models.Model):
 class Reserva(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     fecha = models.DateField()
-    hora = models.TimeField()
+    hora = models.TimeField(default="12:00")
     personas = models.IntegerField()
     productos = models.ManyToManyField(Pelicula, blank=True)
     estado = models.CharField(max_length=20, choices=[
