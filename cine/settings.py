@@ -152,3 +152,4 @@ LOGIN_REDIRECT_URL = '/reserva/'
 
 from django.urls import reverse_lazy
 LOGIN_URL = reverse_lazy('login')
+

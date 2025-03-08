@@ -1,0 +1,11 @@
+.fondo-personalizado { 
+    width: 100%;
+    min-height: 100vh; /* Mantiene la altura completa de la pantalla */
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('/static/imagenes/Logo.jpg') no-repeat center center;
+    background-size: contain; /* Evita que se deforme */
+    background-attachment: fixed; /* Fija el fondo */
+}

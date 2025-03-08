@@ -116,8 +116,54 @@ class OrdenItem(models.Model):
     def subtotal(self):
         return self.precio * self.cantidad
 
+class Contacto(models.Model):
+    nombre = models.CharField(max_length=100)
+    email = models.EmailField()
+    mensaje = models.TextField()
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"Contacto de {self.nombre}"
+    
 
+class estrenos(models.Model):
+    CATEGORIAS = [
+        ('Romance y Drama', 'Romance y Drama'),
+        ('Ciencia ficción y fantasía', 'Ciencia ficción y fantasía'),
+        ('Acción', 'Acción'),
+        ('Comedia', 'Comedia'),
+        ('Terror', 'Terror'),
+        ('Documentales', 'Documentales'),
+    ]
+    
+    titulo = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    trailer_url = models.URLField(help_text="URL de YouTube (se convertirá automáticamente a formato embed)")
+    imagen = models.ImageField(upload_to='peliculas/')
+    categoria = models.CharField(max_length=50, choices=CATEGORIAS)
+    calificacion = models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])
+    fecha_estreno = models.DateField(null=True, blank=True)
+    horario = models.CharField(max_length=255, null=True, blank=True)  # Permite valores nulos y vacíos
+    orden = models.PositiveIntegerField(default=0)  # Campo para definir el orden de las películas
+
+    def save(self, *args, **kwargs):
+        # Convertir URL de YouTube a formato embed si es necesario
+        if 'youtube.com/watch?v=' in self.trailer_url:
+            video_id = self.trailer_url.split('v=')[1].split('&')[0] if '&' in self.trailer_url.split('v=')[1] else self.trailer_url.split('v=')[1]
+            self.trailer_url = f'https://www.youtube.com/embed/{video_id}'
+        elif 'youtu.be/' in self.trailer_url:
+            video_id = self.trailer_url.split('youtu.be/')[1]
+            self.trailer_url = f'https://www.youtube.com/embed/{video_id}'
+        
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.titulo
+    
+    class Meta:
+        verbose_name = "estrenos"
+        verbose_name_plural = "estrenos"
+        ordering = ['orden']  # Ordenar por el campo "orden" de menor a mayor
 
 
 

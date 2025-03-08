@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="page-section" style="background-color: rgb(10, 10, 10);" id="portfolio">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading" style="color: #fff;">Cartelera De Esta Semana</h2>
+        </div>
+        <div class="row">
+            {% if peliculas %}
+                {% for pelicula in peliculas %}
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="portfolio-item">
+                        <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal{{ pelicula.id }}">
+                            <div class="portfolio-hover" style="background-color: rgba(255, 0, 0, 0.9);">
+                                <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <img class="img-fluid" src="{{ pelicula.imagen.url }}" alt="{{ pelicula.titulo }}" style="height: 300px; width: 100%; object-fit: cover;"/>
+                        </a>
+                        <div class="portfolio-caption bg-light p-3">
+                            <div class="portfolio-caption-heading" style="color: #000;">{{ pelicula.titulo }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="portfolioModal{{ pelicula.id }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ pelicula.titulo }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <iframe class="d-block mx-auto" width="560" height="315" src="{{ pelicula.trailer_url }}" allowfullscreen>
+                                    <p>Tu navegador no soporta iframes. <a href="{{ pelicula.trailer_url }}" target="_blank">Ver trailer</a></p>
+                                </iframe>
+                                <p>{{ pelicula.descripcion }}</p>
+                                <p><strong>Horario:</strong> {{ pelicula.horario }}</p>
+                                <p><strong>Categoría:</strong> {{ pelicula.categoria }}</p>
+                                <div>
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= pelicula.calificacion %}
+                                            <i class="fa fa-star text-warning"></i>
+                                        {% else %}
+                                            <i class="fa fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center">
+                    <p class="text-muted">No hay películas disponibles en este momento.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<style>
+    .portfolio-item {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .portfolio-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .portfolio-caption {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 0 0 10px 10px;
+    }
+    .modal-content {
+        border-radius: 10px;
+    }
+    .modal-body iframe {
+        border-radius: 10px;
+        border: none;
+    }
+</style>
+{% endblock %}

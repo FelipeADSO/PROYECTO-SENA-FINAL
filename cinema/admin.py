@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.sites import AlreadyRegistered
 
 
+
 from .models import Pelicula, Reserva
 
 class PeliculaAdmin(admin.ModelAdmin):
@@ -65,5 +66,18 @@ class OrdenAdmin(admin.ModelAdmin):
 
 try:
     admin.site.register(Orden, OrdenAdmin)
+except AlreadyRegistered:
+    pass
+
+from .models import Contacto
+
+class ContactoAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'email', 'fecha_creacion')
+    search_fields = ('nombre', 'email')
+    list_filter = ('fecha_creacion',)
+    readonly_fields = ('fecha_creacion',)
+
+try:
+    admin.site.register(Contacto, ContactoAdmin)
 except AlreadyRegistered:
     pass

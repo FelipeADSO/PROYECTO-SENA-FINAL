@@ -395,3 +395,39 @@ def confirmacion(request, orden_id):
     except Orden.DoesNotExist:
         messages.error(request, "Orden no encontrada")
         return redirect('cartelera')
+    
+from .models import Contacto
+
+def contactenos(request):
+    if request.method == "POST":
+        nombre = request.POST.get('name')
+        email = request.POST.get('email')
+        mensaje = request.POST.get('message')
+        
+        # Guardar en la base de datos
+        contacto = Contacto.objects.create(
+            nombre=nombre,
+            email=email,
+            mensaje=mensaje
+        )
+        
+        # Enviar correo electrónico
+        subject = "Nuevo mensaje de contacto recibido"
+        message = f"""Se ha recibido un nuevo mensaje de contacto:
+        
+        Nombre: {nombre}
+        Email: {email}
+        Mensaje: {mensaje}
+        """
+        from_email = 'imbachicarvajaldanielfelipe@gmail.com'  
+        recipient_list = ['imbachicarvajaldanielfelipe@gmail.com']  
+        
+        try:
+            send_mail(subject, message, from_email, recipient_list)
+        except Exception as e:
+            print(f"Error al enviar correo: {e}")
+            
+        messages.success(request, "Tu mensaje ha sido enviado correctamente. Nos pondremos en contacto contigo pronto.")
+        return redirect('contactenos')
+        
+    return render(request, 'contactenos.html')    
