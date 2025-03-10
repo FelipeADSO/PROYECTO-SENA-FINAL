@@ -85,7 +85,7 @@ def reserva(request):
 
 
 def peliculas(request):
-    return render(request, "peliculas.html")
+     return render(request, "cinema/peliculas.html")
 
 def peliculas_2(request):
     return render(request, "peliculas_2.html")
