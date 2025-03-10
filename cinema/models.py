@@ -22,7 +22,7 @@ class Pelicula(models.Model):
     calificacion = models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])
     fecha_estreno = models.DateField(null=True, blank=True)
     horario = models.CharField(max_length=255, null=True, blank=True)  # Permite valores nulos y vacíos
-    orden = models.PositiveIntegerField(default=0)  # Campo para definir el orden de las películas
+    orden = models.IntegerField(default=0)  # Campo para definir el orden de las películas
 
     def save(self, *args, **kwargs):
         # Convertir URL de YouTube a formato embed si es necesario
