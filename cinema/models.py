@@ -145,7 +145,7 @@ class EstrenoPelicula(models.Model):
     calificacion = models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])
     fecha_estreno = models.DateField(null=True, blank=True)
     horario = models.CharField(max_length=255, null=True, blank=True)
-    orden = models.PositiveIntegerField(default=0)
+    orden = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
         if 'youtube.com/watch?v=' in self.trailer_url:
