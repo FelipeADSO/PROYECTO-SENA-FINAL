@@ -433,8 +433,8 @@ def contactenos(request):
     return render(request, 'contactenos.html')    
 
 from django.shortcuts import render
-from .models import EstrenoPelicula
+from .models import ContenidoCine  # Usa el modelo correcto
 
-def cartelera_estrenos(request):
-    estrenos = EstrenoPelicula.objects.all()
-    return render(request, 'cartelera_estrenos.html', {'estrenos': estrenos})
+def mostrar_contenido(request):
+    contenido = ContenidoCine.objects.all()  # Obtiene todas las películas
+    return render(request, 'contenidocine.html', {'contenido': contenido})

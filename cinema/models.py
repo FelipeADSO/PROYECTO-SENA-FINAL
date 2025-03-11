@@ -164,3 +164,48 @@ class EstrenoPelicula(models.Model):
         verbose_name = "estreno"
         verbose_name_plural = "estrenos"
         ordering = ['orden']
+        
+from django.db import models
+
+
+
+class ContenidoCine(models.Model):
+    GENEROS = [
+        ('Romance y Drama', 'Romance y Drama'),
+        ('Ciencia ficción y fantasía', 'Ciencia ficción y fantasía'),
+        ('Acción', 'Acción'),
+        ('Comedia', 'Comedia'),
+        ('Terror', 'Terror'),
+        ('Documentales', 'Documentales'),
+    ]
+    
+    nombre = models.CharField(max_length=100)
+    sinopsis = models.TextField()
+    video_promocional = models.URLField(help_text="URL de YouTube (se convertirá automáticamente a formato embed)")
+    imagen_portada = models.ImageField(upload_to='contenidos/')
+    genero = models.CharField(max_length=50, choices=GENEROS)
+    puntuacion = models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])
+    fecha_lanzamiento = models.DateField(null=True, blank=True)
+    horarios_disponibles = models.CharField(max_length=255, null=True, blank=True)
+    prioridad = models.IntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        # Convertir URL de YouTube a formato embed si es necesario
+        if 'youtube.com/watch?v=' in self.video_promocional:
+            video_id = self.video_promocional.split('v=')[1].split('&')[0] if '&' in self.video_promocional.split('v=')[1] else self.video_promocional.split('v=')[1]
+            self.video_promocional = f'https://www.youtube.com/embed/{video_id}'
+        elif 'youtu.be/' in self.video_promocional:
+            video_id = self.video_promocional.split('youtu.be/')[1]
+            self.video_promocional = f'https://www.youtube.com/embed/{video_id}'
+        
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.nombre
+    
+    class Meta:
+        verbose_name = "Contenido de Cine"
+        verbose_name_plural = "Contenidos de Cine"
+        ordering = ['prioridad']  # Ordenar por el campo "prioridad" de menor a mayor
+
+

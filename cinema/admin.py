@@ -89,3 +89,12 @@ from .models import EstrenoPelicula
 class EstrenoPeliculaAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'categoria', 'calificacion', 'fecha_estreno', 'orden')
     ordering = ('orden',)
+
+from django.contrib import admin
+from .models import ContenidoCine  # Asegúrate de importar el modelo
+
+admin.site.register(ContenidoCine)  # Registra el modelo en el admin
+
+
+
+
