@@ -33,7 +33,6 @@ LOGIN_REDIRECT_URL = 'estrenos'
 # Application definition
 
 INSTALLED_APPS = [
-    'admin_interface',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cinema',
-    'colorfield',
+    'jazzmin',
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -153,3 +152,10 @@ LOGIN_REDIRECT_URL = '/reserva/'
 from django.urls import reverse_lazy
 LOGIN_URL = reverse_lazy('login')
 
+JAZZMIN_SETTINGS = {
+    "site_title": "Administración del Cine",
+    "site_header": "Cine Django",
+    "welcome_sign": "Bienvenido al panel de administración del cine",
+    "copyright": "Tu Empresa",
+    "search_model": ["app_peliculas.Pelicula"],  # Personaliza con tus modelos
+}
