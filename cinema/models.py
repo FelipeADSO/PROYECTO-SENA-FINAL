@@ -208,4 +208,15 @@ class ContenidoCine(models.Model):
         verbose_name_plural = "Contenidos de Cine"
         ordering = ['prioridad']  # Ordenar por el campo "prioridad" de menor a mayor
 
+from django.db import models
+
+class Funcion(models.Model):
+    titulo = models.CharField(max_length=255)
+    horario = models.DateTimeField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.titulo} - {self.horario}"
+
+
 

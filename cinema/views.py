@@ -433,8 +433,116 @@ def contactenos(request):
     return render(request, 'contactenos.html')    
 
 from django.shortcuts import render
-from .models import ContenidoCine  # Usa el modelo correcto
+from .models import ContenidoCine
 
-def mostrar_contenido(request):
-    contenido = ContenidoCine.objects.all()  # Obtiene todas las películas
-    return render(request, 'contenidocine.html', {'contenido': contenido})
+def catalogo(request):
+    contenidos = ContenidoCine.objects.all().order_by('prioridad')
+    return render(request, 'catalogo.html', {'contenidos': contenidos})
+
+
+import logging
+from django.db import transaction
+from django.core.cache import cache
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
+from django.http import JsonResponse
+from django.conf import settings
+from .models import Reserva, CarritoItem, Funcion
+from .forms import ReservaForm
+import json
+
+logger = logging.getLogger(__name__)
+
+def finalizar_compra(request):
+    if request.method == 'POST':
+        transaction_token = request.POST.get('transaction_token')
+        cache_key = f'order_token_{transaction_token}'
+        
+        if cache.get(cache_key):
+            return JsonResponse({'success': True, 'message': 'Reserva ya procesada'})
+        
+        cache.set(cache_key, True, 30)
+        
+        form = ReservaForm(request.POST, request.FILES)
+        if form.is_valid():
+            try:
+                with transaction.atomic():
+                    reserva = form.save(commit=False)
+                    reserva.total = request.POST.get('total', 0)
+                    
+                    if 'comprobante' in request.FILES:
+                        reserva.comprobante = request.FILES['comprobante']
+                    
+                    reserva.save()
+                    
+                    items = json.loads(request.POST.get('items', '[]'))
+                    detalles_correo = []
+                    
+                    for item in items:
+                        funcion_id = item.get('funcion_id')
+                        cantidad = item.get('cantidad', 1)
+                        precio = item.get('precio', 0)
+                        subtotal = item.get('subtotal', 0)
+                        
+                        try:
+                            funcion = Funcion.objects.get(id=funcion_id)
+                        except Funcion.DoesNotExist:
+                            logger.error(f"Función con ID {funcion_id} no encontrada")
+                            continue
+                        
+                        CarritoItem.objects.create(
+                            reserva=reserva,
+                            funcion=funcion,
+                            cantidad=cantidad,
+                            precio_unitario=precio,
+                            subtotal=subtotal
+                        )
+                        
+                        detalles_correo.append(f"Película: {funcion.pelicula.titulo}, Sala: {funcion.sala.nombre}, Cantidad: {cantidad}, Precio: ${precio}.")
+                    
+                    asunto = "Confirmación de Reserva - Cine Los Andes"
+                    mensaje = f"""
+                    Hola {reserva.nombre},
+                    
+                    ¡Gracias por tu compra en Cine Los Andes!
+                    
+                    Detalles de tu reserva:
+                    {''.join([f'{chr(10)}- {detalle}' for detalle in detalles_correo])}
+                    
+                    Total: ${reserva.total}
+                    
+                    Tu reserva ha sido confirmada.
+                    
+                    Saludos,
+                    El equipo de Cine Los Andes
+                    """
+                    
+                    destinatario = reserva.correo
+                    
+                    text_content = strip_tags(mensaje)
+                    email = EmailMultiAlternatives(
+                        asunto,
+                        text_content,
+                        settings.EMAIL_HOST_USER,
+                        [destinatario, 'andrescediel070625@gmail.com']
+                    )
+                    
+                    email.attach_alternative(mensaje, "text/html")
+                    
+                    if hasattr(reserva, 'comprobante') and reserva.comprobante:
+                        email.attach_file(reserva.comprobante.path)
+                    
+                    email.send()
+                    
+                    cache.set(cache_key, True, 60 * 30)
+                    
+                    return JsonResponse({'success': True, 'message': 'Reserva creada correctamente y confirmación enviada por correo'})
+            except Exception as e:
+                logger.error(f"Error al procesar la reserva: {e}")
+                cache.delete(cache_key)
+                return JsonResponse({'success': False, 'message': 'Error al procesar la reserva'})
+        else:
+            cache.delete(cache_key)
+            return JsonResponse({'success': False, 'errors': form.errors})
+    
+    return JsonResponse({'success': False, 'message': 'Método no permitido'})

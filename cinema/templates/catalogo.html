@@ -1,16 +1,57 @@
-<!-- {% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block style %}
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- CSS Personalizado -->
+<link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+<!-- FontAwesome -->
+<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+<style>
+    .modal-content {
+        border-radius: 10px;
+    }
+    .modal-body iframe {
+        border-radius: 10px;
+        border: none;
+    }
+    .modal-header, .modal-footer {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+    }
+    .modal-title {
+        color: #000;
+    }
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+    .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+    .fa-star {
+        color: #ccc;
+    }
+    .fa-star.text-warning {
+        color: #ffc107;
+    }
+    img.img-fluid {
+        object-fit: cover;
+        width: 100%;
+        height: 300px;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
 <section class="page-section" style="background-color: rgb(10, 10, 10);" id="catalogo">
     <div class="container">
         <div class="text-center">
-            <h2 class="section-heading" style="color: #fff;">Peliculas De Estreno</h2>
+            <h2 class="section-heading" style="color: #fff;">Películas de Estreno</h2>
         </div>
         <div class="row">
             {% if contenidos %}
@@ -21,15 +62,15 @@
                             <div class="portfolio-hover" style="background-color: rgba(255, 0, 0, 0.9);">
                                 <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                            <img class="img-fluid" src="{{ contenido.imagen_portada.url }}" alt="{{ contenido.nombre }}" style="height: 300px; width: 100%; object-fit: cover;"/>
+                            <img class="img-fluid" src="{{ contenido.imagen_portada.url }}" alt="{{ contenido.nombre }}"/>
                         </a>
                         <div class="portfolio-caption bg-light p-3">
-                            <div class="portfolio-caption-heading" style="color: #000;">{{ contenido.nombre }}</div>
+                            <div class="portfolio-caption-heading text-dark">{{ contenido.nombre }}</div>
                         </div>
                     </div>
                 </div>
 
-                 Modal para cada película 
+                <!-- Modal para cada película -->
                 <div class="modal fade" id="modal{{ contenido.id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -39,9 +80,7 @@
                             </div>
                             <div class="modal-body text-center">
                                 {% if contenido.video_promocional %}
-                                <iframe class="d-block mx-auto" width="560" height="315" src="{{ contenido.video_promocional }}" allowfullscreen>
-                                    <p>Tu navegador no soporta iframes. <a href="{{ contenido.video_promocional }}" target="_blank">Ver trailer</a></p>
-                                </iframe>
+                                    <iframe class="d-block mx-auto" width="560" height="315" src="{{ contenido.video_promocional }}" allowfullscreen></iframe>
                                 {% else %}
                                     <p>No hay video promocional disponible.</p>
                                 {% endif %}
@@ -74,30 +113,11 @@
     </div>
 </section>
 
-<style>
-    .portfolio-item {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .portfolio-item:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-    .portfolio-caption {
-        background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 0 0 10px 10px;
-    }
-    .modal-content {
-        border-radius: 10px;
-    }
-    .modal-body iframe {
-        border-radius: 10px;
-        border: none;
-    }
-</style>
-
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script> 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/scripts.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- JS Personalizado -->
+<script src="{% static 'js/catalogo.js' %}"></script>
 <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-{% endblock %} -->
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+{% endblock %}

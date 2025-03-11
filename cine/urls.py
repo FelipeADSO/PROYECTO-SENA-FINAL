@@ -11,6 +11,7 @@ urlpatterns = [
     path('pasarela/', views.pasarela, name='pasarela'),
     path('cartelera', views.cartelera, name='cartelera'),
     path('peliculas', views.peliculas, name='peliculas'),
+    path('catalogo/', views.catalogo, name='catalogo'),
     path('puestos/', views.puestos, name='puestos'),
     path('procesar-reserva/', views.procesar_reserva, name='procesar_reserva'),
     path('peliculas_2', views.peliculas_2, name='peliculas_2'),
