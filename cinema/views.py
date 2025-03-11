@@ -85,7 +85,7 @@ def reserva(request):
 
 
 def peliculas(request):
-     return render(request, "cinema/peliculas.html")
+     return render(request, "peliculas.html")
 
 def peliculas_2(request):
     return render(request, "peliculas_2.html")
@@ -431,3 +431,10 @@ def contactenos(request):
         return redirect('contactenos')
         
     return render(request, 'contactenos.html')    
+
+from django.shortcuts import render
+from .models import EstrenoPelicula
+
+def cartelera_estrenos(request):
+    estrenos = EstrenoPelicula.objects.all()
+    return render(request, 'cartelera_estrenos.html', {'estrenos': estrenos})

@@ -81,3 +81,11 @@ try:
     admin.site.register(Contacto, ContactoAdmin)
 except AlreadyRegistered:
     pass
+
+from django.contrib import admin
+from .models import EstrenoPelicula
+
+@admin.register(EstrenoPelicula)
+class EstrenoPeliculaAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'categoria', 'calificacion', 'fecha_estreno', 'orden')
+    ordering = ('orden',)

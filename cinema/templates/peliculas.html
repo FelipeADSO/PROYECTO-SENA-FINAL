@@ -8,40 +8,40 @@
             <h2 class="section-heading" style="color: #fff;">Cartelera De Esta Semana</h2>
         </div>
         <div class="row">
-            {% if peliculas %}
-                {% for pelicula in peliculas %}
+            {% if estrenos %}
+                {% for estreno in estrenos %}
                 <div class="col-lg-4 col-sm-6 mb-4">
                     <div class="portfolio-item">
-                        <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal{{ pelicula.id }}">
+                        <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal{{ estreno.id }}">
                             <div class="portfolio-hover" style="background-color: rgba(255, 0, 0, 0.9);">
                                 <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                            <img class="img-fluid" src="{{ pelicula.imagen.url }}" alt="{{ pelicula.titulo }}" style="height: 300px; width: 100%; object-fit: cover;"/>
+                            <img class="img-fluid" src="{{ estreno.imagen.url }}" alt="{{ estreno.titulo }}" style="height: 300px; width: 100%; object-fit: cover;"/>
                         </a>
                         <div class="portfolio-caption bg-light p-3">
-                            <div class="portfolio-caption-heading" style="color: #000;">{{ pelicula.titulo }}</div>
+                            <div class="portfolio-caption-heading" style="color: #000;">{{ estreno.titulo }}</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Modal -->
-                <div class="modal fade" id="portfolioModal{{ pelicula.id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal fade" id="portfolioModal{{ estreno.id }}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">{{ pelicula.titulo }}</h5>
+                                <h5 class="modal-title">{{ estreno.titulo }}</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body text-center">
-                                <iframe class="d-block mx-auto" width="560" height="315" src="{{ pelicula.trailer_url }}" allowfullscreen>
-                                    <p>Tu navegador no soporta iframes. <a href="{{ pelicula.trailer_url }}" target="_blank">Ver trailer</a></p>
+                                <iframe class="d-block mx-auto" width="560" height="315" src="{{ estreno.trailer_url }}" allowfullscreen>
+                                    <p>Tu navegador no soporta iframes. <a href="{{ estreno.trailer_url }}" target="_blank">Ver trailer</a></p>
                                 </iframe>
-                                <p>{{ pelicula.descripcion }}</p>
-                                <p><strong>Horario:</strong> {{ pelicula.horario }}</p>
-                                <p><strong>Categoría:</strong> {{ pelicula.categoria }}</p>
+                                <p>{{ estreno.descripcion }}</p>
+                                <p><strong>Horario:</strong> {{ estreno.horario }}</p>
+                                <p><strong>Categoría:</strong> {{ estreno.categoria }}</p>
                                 <div>
                                     {% for i in "12345" %}
-                                        {% if forloop.counter <= pelicula.calificacion %}
+                                        {% if forloop.counter <= estreno.calificacion %}
                                             <i class="fa fa-star text-warning"></i>
                                         {% else %}
                                             <i class="fa fa-star"></i>
@@ -58,7 +58,7 @@
                 {% endfor %}
             {% else %}
                 <div class="col-12 text-center">
-                    <p class="text-muted">No hay películas disponibles en este momento.</p>
+                    <p class="text-muted">No hay estrenos disponibles en este momento.</p>
                 </div>
             {% endif %}
         </div>

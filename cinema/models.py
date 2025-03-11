@@ -126,7 +126,8 @@ class Contacto(models.Model):
         return f"Contacto de {self.nombre}"
     
 
-class estrenos(models.Model):
+
+class EstrenoPelicula(models.Model):
     CATEGORIAS = [
         ('Romance y Drama', 'Romance y Drama'),
         ('Ciencia ficción y fantasía', 'Ciencia ficción y fantasía'),
@@ -139,15 +140,14 @@ class estrenos(models.Model):
     titulo = models.CharField(max_length=100)
     descripcion = models.TextField()
     trailer_url = models.URLField(help_text="URL de YouTube (se convertirá automáticamente a formato embed)")
-    imagen = models.ImageField(upload_to='peliculas/')
+    imagen = models.ImageField(upload_to='estrenos/')
     categoria = models.CharField(max_length=50, choices=CATEGORIAS)
     calificacion = models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])
     fecha_estreno = models.DateField(null=True, blank=True)
-    horario = models.CharField(max_length=255, null=True, blank=True)  # Permite valores nulos y vacíos
-    orden = models.PositiveIntegerField(default=0)  # Campo para definir el orden de las películas
+    horario = models.CharField(max_length=255, null=True, blank=True)
+    orden = models.PositiveIntegerField(default=0)
 
     def save(self, *args, **kwargs):
-        # Convertir URL de YouTube a formato embed si es necesario
         if 'youtube.com/watch?v=' in self.trailer_url:
             video_id = self.trailer_url.split('v=')[1].split('&')[0] if '&' in self.trailer_url.split('v=')[1] else self.trailer_url.split('v=')[1]
             self.trailer_url = f'https://www.youtube.com/embed/{video_id}'
@@ -161,10 +161,6 @@ class estrenos(models.Model):
         return self.titulo
     
     class Meta:
-        verbose_name = "estrenos"
+        verbose_name = "estreno"
         verbose_name_plural = "estrenos"
-        ordering = ['orden']  # Ordenar por el campo "orden" de menor a mayor
-
-
-
-  
+        ordering = ['orden']
