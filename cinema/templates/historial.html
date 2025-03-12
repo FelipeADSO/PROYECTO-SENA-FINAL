@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+    /* Estilos personalizados sin afectar Bootstrap */
+    .contenedor-mensaje {
+    display: flex;
+    margin: 0 10px;
+    justify-content: center;
+    align-items: center;
+    height: 30vh; /* Ajuste dinámico */
+}
+
+.mensaje-reserva {
+    background-color: rgba(255, 0, 0, 0.8); /* Rojo translúcido */
+    color: white;
+    padding: 15px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.mensaje-reserva:hover {
+    transform: scale(1.05);
+}
+
+    .custom-container {
+        max-width: 900px;
+        margin: 70px auto;
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-title {
+        text-align: center;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .custom-table th, .custom-table td {
+        padding: 14px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .custom-table th {
+        background-color: #222;
+        color: white;
+        font-weight: bold;
+    }
+
+    .custom-table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .custom-alert {
+        text-align: center;
+        background-color: #ffe6cc;
+        padding: 15px;
+        border-radius: 8px;
+        color: #884400;
+        font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+        .custom-table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="custom-container">
+    <h2 class="custom-title">🎟️ Historial de Compras</h2>
+    
+    {% if reservas %}
+    <div class="table-responsive">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>🎬 Película</th>
+                    <th>👥 Cantidad de Boletos</th>
+                    <th>📅 Fecha de Compra</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas %}
+                <tr>
+                    <td>
+                        {% for pelicula in reserva.productos.all %}
+                            {{ pelicula.titulo }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{ reserva.personas }}</td>
+                    <td>{{ reserva.fecha }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="contenedor-mensaje">
+        <div class="mensaje-reserva">
+            😔 No has realizado reservas aún.
+        </div>
+    </div>
+    {% endif %}
+    
+
+    
+</div>
+{% endblock %}

@@ -71,6 +71,7 @@ class Reserva(models.Model):
     fecha_creacion = models.DateTimeField(auto_now_add=True)
 
 
+
 class CarritoItem(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     reserva = models.ForeignKey(Reserva, on_delete=models.CASCADE)
@@ -217,6 +218,19 @@ class Funcion(models.Model):
 
     def __str__(self):
         return f"{self.titulo} - {self.horario}"
+    
+from django.contrib.auth.models import User
+from django.db import models
+
+class Historial(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # Relación con el usuario
+    pelicula = models.CharField(max_length=200)  # Puede ser una ForeignKey si tienes un modelo Pelicula
+    cantidad_boletos = models.PositiveIntegerField()
+    fecha_reserva = models.DateTimeField(auto_now_add=True)  # Fecha automática
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.pelicula} ({self.fecha_reserva})"
+
 
 
 

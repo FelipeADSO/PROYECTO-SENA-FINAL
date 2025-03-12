@@ -546,3 +546,13 @@ def finalizar_compra(request):
             return JsonResponse({'success': False, 'errors': form.errors})
     
     return JsonResponse({'success': False, 'message': 'Método no permitido'})
+
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import Reserva  # O el modelo que maneje las compras
+
+@login_required
+def historial_compras(request):
+    reservas = Reserva.objects.filter(usuario=request.user).order_by('-fecha_creacion')  # Últimas compras primero
+    return render(request, 'historial.html', {'reservas': reservas})

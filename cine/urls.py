@@ -5,6 +5,8 @@ from django.conf.urls.static import static
 from cinema import views
 from django.contrib.auth.views import LogoutView
 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.inicio, name='inicio'),
@@ -13,6 +15,7 @@ urlpatterns = [
     path('peliculas', views.peliculas, name='peliculas'),
     path('catalogo/', views.catalogo, name='catalogo'),
     path('puestos/', views.puestos, name='puestos'),
+    path('historial/', views.historial_compras, name='historial'),
     path('procesar-reserva/', views.procesar_reserva, name='procesar_reserva'),
     path('peliculas_2', views.peliculas_2, name='peliculas_2'),
     path('contactenos', views.contactenos, name='contactenos'),
