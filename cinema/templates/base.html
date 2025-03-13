@@ -65,12 +65,12 @@
 
         <!-- Contenedor del menú -->
         <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto text-uppercase align-items-center">
+            <ul class="navbar-nav ms-auto align-items-center">
 
                 <!-- Enlaces principales -->
                 <li class="nav-item"><a class="nav-link px-3" href="{% url 'inicio' %}">Inicio</a></li>
                 <li class="nav-item"><a class="nav-link px-3" href="{% url 'cartelera' %}">Cartelera</a></li>
-                <!-- <li class="nav-item"><a class="nav-link px-3" href="{% url 'catalogo' %}">Películas</a></li> -->
+                <li class="nav-item"><a class="nav-link px-3" href="{% url 'catalogo' %}">Películas</a></li>
 
                 <!-- Menú desplegable "Contáctenos" -->
                 <li class="nav-item dropdown">
@@ -118,7 +118,8 @@
                             <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a></li>
                             <li><a class="dropdown-item" href="{% url 'register' %}">Registrarse</a></li>
                         {% else %}
-                            <li><a class="dropdown-item" href="{% url 'perfil' %}">Perfil de Usuario</a></li>
+                            <li><button type="submit" class="dropdown-item" href="{% url 'perfil' %}">Perfil de Usuario</button></li>
+                            <li><button type="submit" class="dropdown-item" href="{% url 'historial' %}">Historial</button></li>
                             <li>
                                 <form method="post" action="{% url 'logout' %}">
                                     {% csrf_token %}
@@ -128,7 +129,6 @@
                         {% endif %}
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link px-3" href="{% url 'historial' %}">Ver historial</a></li>
             </ul>
         </div>
     </div>

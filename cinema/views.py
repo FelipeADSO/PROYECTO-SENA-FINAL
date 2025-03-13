@@ -432,12 +432,24 @@ def contactenos(request):
         
     return render(request, 'contactenos.html')    
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import ContenidoCine
+from .forms import ContenidoCineForm
 
 def catalogo(request):
     contenidos = ContenidoCine.objects.all().order_by('prioridad')
     return render(request, 'catalogo.html', {'contenidos': contenidos})
+
+def agregar_pelicula(request):
+    if request.method == "POST":
+        form = ContenidoCineForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('catalogo')  # Redirige al catálogo después de agregar
+    else:
+        form = ContenidoCineForm()
+    
+    return render(request, 'agregar_pelicula.html', {'form': form})
 
 
 import logging

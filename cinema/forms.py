@@ -57,3 +57,11 @@ class OrdenForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'tucorreo@ejemplo.com'}),
             'telefono': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Tu número de teléfono'})
         }
+
+from django import forms
+from .models import ContenidoCine
+
+class ContenidoCineForm(forms.ModelForm):
+    class Meta:
+        model = ContenidoCine
+        fields = ['nombre', 'sinopsis', 'video_promocional', 'imagen_portada', 'genero', 'puntuacion', 'fecha_lanzamiento', 'fecha_estreno', 'prioridad']

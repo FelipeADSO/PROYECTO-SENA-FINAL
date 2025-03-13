@@ -168,8 +168,6 @@ class EstrenoPelicula(models.Model):
         
 from django.db import models
 
-
-
 class ContenidoCine(models.Model):
     GENEROS = [
         ('Romance y Drama', 'Romance y Drama'),
@@ -185,13 +183,13 @@ class ContenidoCine(models.Model):
     video_promocional = models.URLField(help_text="URL de YouTube (se convertirá automáticamente a formato embed)")
     imagen_portada = models.ImageField(upload_to='contenidos/')
     genero = models.CharField(max_length=50, choices=GENEROS)
-    puntuacion = models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5')])
+    puntuacion = models.FloatField(choices=[(x / 2, str(x / 2)) for x in range(1, 11)])  # Permite valores decimales
     fecha_lanzamiento = models.DateField(null=True, blank=True)
-    horarios_disponibles = models.CharField(max_length=255, null=True, blank=True)
+    fecha_estreno = models.DateField(null=True, blank=True)  # Nuevo campo
     prioridad = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
-        # Convertir URL de YouTube a formato embed si es necesario
+        # Convertir URL de YouTube a formato embed
         if 'youtube.com/watch?v=' in self.video_promocional:
             video_id = self.video_promocional.split('v=')[1].split('&')[0] if '&' in self.video_promocional.split('v=')[1] else self.video_promocional.split('v=')[1]
             self.video_promocional = f'https://www.youtube.com/embed/{video_id}'
@@ -207,7 +205,7 @@ class ContenidoCine(models.Model):
     class Meta:
         verbose_name = "Contenido de Cine"
         verbose_name_plural = "Contenidos de Cine"
-        ordering = ['prioridad']  # Ordenar por el campo "prioridad" de menor a mayor
+        ordering = ['prioridad']
 
 from django.db import models
 
