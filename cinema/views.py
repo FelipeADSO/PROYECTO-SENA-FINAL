@@ -186,7 +186,7 @@ def restablecer(request):
         if user:
             token = default_token_generator.make_token(user)
             uid = urlsafe_base64_encode(force_bytes(user.pk))
-            enlace = request.build_absolute_uri(f"/cambiar_contraseña/{uid}/{token}/")
+            enlace = request.build_absolute_uri(f"/cambiar_contrasena/{uid}/{token}/")
 
             send_mail(
                 "Restablecimiento de contraseña",
@@ -203,7 +203,10 @@ def restablecer(request):
     
     return render(request, "restablecer.html")
 
-def cambiar_contraseña(request, uidb64, token):
+def home(request):
+    return render(request, "home.html")
+
+def cambiar_contrasena(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -212,16 +215,16 @@ def cambiar_contraseña(request, uidb64, token):
 
     if user and default_token_generator.check_token(user, token):
         if request.method == "POST":
-            nueva_contraseña = request.POST.get("password")
-            if nueva_contraseña:
-                user.set_password(nueva_contraseña)
+            nueva_contrasena = request.POST.get("password")
+            if nueva_contrasena:
+                user.set_password(nueva_contrasena)
                 user.save()
                 messages.success(request, "Contraseña cambiada con éxito.")
                 return redirect("password_changed")
             else:
                 messages.error(request, "La nueva contraseña no puede estar vacía.")
 
-        return render(request, "cambiar_contraseña.html")
+        return render(request, "cambiar_contrasena.html")
 
     messages.error(request, "El enlace de restablecimiento es inválido o ha expirado.")
     return redirect("login")

@@ -6,12 +6,35 @@
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <style>
+    .fonditos {
+    position: relative;
+    background-image: url("{% static 'imagenes/cinema-with-popcorn-box.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.fonditos::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Ajusta el valor para mayor o menor oscuridad */
+    z-index: 1;
+}
+.reset-container {
+    position: relative;
+    z-index: 2; /* Asegura que el contenido esté por encima del fondo */
+}
     /* Estilos personalizados */
     .reset-container {
         background: #222;
         padding: 30px;
         border-radius: 8px;
-        box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        
         text-align: center;
         max-width: 400px;
         margin: auto;
@@ -74,28 +97,30 @@
 {% endblock %}
 
 {% block content %}
-<div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="reset-container">
-        <h2>Restablecer contraseña</h2>
-        <p>Introduce tu correo electrónico registrado y te enviaremos un enlace para restablecer tu contraseña.</p>
+<div class="fonditos">
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="reset-container">
+            <h2>Restablecer contraseña</h2>
+            <p>Introduce tu correo electrónico registrado y te enviaremos un enlace para restablecer tu contraseña.</p>
 
-        {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-                <div class="{{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        <form action="{% url 'restablecer' %}" method="POST">
-            {% csrf_token %}
-            <div class="mb-3">
-                <input type="email" class="form-control" name="email" placeholder="Correo electrónico" required>
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
             </div>
-            <button type="submit" class="btn btn-danger">Enviar enlace</button>
-        </form>
+            {% endif %}
+
+            <form action="{% url 'restablecer' %}" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <input type="email" class="form-control" name="email" placeholder="Correo electrónico" required>
+                </div>
+                <button type="submit" class="btn btn-danger">Enviar enlace</button>
+            </form>
+        </div>
     </div>
-</div>
+</div>    
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/scripts.js"></script>
 <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
