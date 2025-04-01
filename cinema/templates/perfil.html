@@ -76,7 +76,39 @@
     margin-right: 10px;
     color: red;
   }
+  @media (max-width: 480px) {
+    .profile-card {
+      width: 90%;
+    }
 
+    .profile-image img {
+      width: 150px;
+      height: 150px;
+    }
+
+    .profile-details li {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .profile-image img {
+      width: 120px;
+      height: 120px;
+    }
+
+    .profile-details {
+      padding: 20px;
+    }
+
+    .profile-details h2 {
+      font-size: 20px;
+    }
+
+    .profile-details li {
+      font-size: 14px;
+    }
+  }
   @media (max-width: 768px) {
     .profile-card {
       flex-direction: column;
