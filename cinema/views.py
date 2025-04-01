@@ -191,13 +191,13 @@ def restablecer(request):
             send_mail(
                 "Restablecimiento de contraseña",
                 f"Haz clic en el siguiente enlace para cambiar tu contraseña: {enlace}",
-                "jalmpa77@gmail.com",
+                "andrescediel070625@gmail.com",
                 [email],
                 fail_silently=False,
             )
 
             messages.success(request, "Se ha enviado un enlace de restablecimiento a su correo.")
-            return redirect("home")
+            return redirect("login")
         else:
             messages.error(request, "No se encontró un usuario con ese correo electrónico.")
     

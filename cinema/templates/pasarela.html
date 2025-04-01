@@ -7,95 +7,171 @@
 <link rel="stylesheet" href="{% static 'css/pasarela.css' %}">
 <style>
 
- 
+    .qr-image {
+        width: 150px;
+        height: auto;
+        border-radius: 10px;
+        margin: 0 auto;
+        display: block;
+    }
+    .resumen-imagen {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+    .resumen-item {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+    .payment-section {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 30px;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="checkout-container mt-5">
-    <h1 class="checkout-titulo">Finalizar Compra</h1>
+<div class="container py-5">
+    <h1 class="mb-4 text-center mt-5">Finalizar Compra</h1>
     
     {% if messages %}
-    <div class="messages">
+    <div class="mb-4">
         {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
             {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         {% endfor %}
     </div>
     {% endif %}
     
-    <div class="checkout-grid">
-        <div class="checkout-form">
-            <h2 class="resumen-titulo">Datos de Contacto</h2>
-            <form method="POST">
-                {% csrf_token %}
-                
-                <div class="form-group">
-                    <label for="{{ form.nombre.id_for_label }}">Nombre Completo</label>
-                    {{ form.nombre }}
-                    {% if form.nombre.errors %}
-                    <div class="form-error">{{ form.nombre.errors }}</div>
-                    {% endif %}
-                </div>
-                
-                <div class="form-group">
-                    <label for="{{ form.email.id_for_label }}">Correo Electrónico</label>
-                    {{ form.email }}
-                    {% if form.email.errors %}
-                    <div class="form-error">{{ form.email.errors }}</div>
-                    {% endif %}
-                </div>
-                
-                <div class="form-group">
-                    <label for="{{ form.telefono.id_for_label }}">Teléfono</label>
-                    {{ form.telefono }}
-                    {% if form.telefono.errors %}
-                    <div class="form-error">{{ form.telefono.errors }}</div>
-                    {% endif %}
-                </div>
-                
-                <button type="submit" class="btn btn-success">
-                    Confirmar Pedido
-                </button>
-            </form>
-        </div>
+    <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
         
-        <div class="checkout-resumen">
-            <h2 class="resumen-titulo">Resumen del Pedido</h2>
-            
-            {% for item in carrito_items %}
-            <div class="resumen-item">
-                <div class="resumen-producto">
-                    {% comment %}Usando una imagen genérica si no hay imagen de película{% endcomment %}
-                    {% if item.reserva.productos.first.imagen %}
-                        <img src="{{ item.reserva.productos.first.imagen.url }}" alt="Película" class="resumen-imagen">
-                    {% else %}
-                        <div style="width: 60px; height: 60px; background-color: #ddd; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #888;">IMG</div>
-                    {% endif %}
-                    <div>
-                        <div><strong>Reserva #{{ item.reserva.id }}</strong></div>
-                        <div>Película: {% if item.reserva.productos.first %}{{ item.reserva.productos.first.titulo }}{% else %}No especificada{% endif %}</div>
-                        <div>Fecha: {{ item.reserva.fecha }}</div>
-                        <div>Hora: {{ item.reserva.hora }}</div>
-                        <div>Personas: {{ item.reserva.personas }}</div>
-                        <div>Cantidad: {{ item.cantidad }}</div>
+        <div class="row g-4">
+            <!-- Columna de Datos de Contacto -->
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h2 class="card-title mb-4">Datos de Contacto</h2>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.nombre.id_for_label }}" class="form-label">Nombre Completo</label>
+                            {{ form.nombre }}
+                            {% if form.nombre.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.nombre.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">Correo Electrónico</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.email.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.telefono.id_for_label }}" class="form-label">Teléfono</label>
+                            {{ form.telefono }}
+                            {% if form.telefono.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.telefono.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-                <div>${{ item.subtotal }}</div>
-            </div>
-            {% endfor %}
-            
-            <div class="resumen-total">
-                Total: ${{ total }}
             </div>
             
-            <div style="margin-top: 2rem;">
-                <a href="{% url 'ver_carrito' %}" class="btn btn-outline">
-                    Volver al Carrito
-                </a>
+            <!-- Columna de Resumen del Pedido -->
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h2 class="card-title mb-4">Resumen del Pedido</h2>
+                        
+                        {% for item in carrito_items %}
+                        <div class="resumen-item">
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex gap-3">
+                                    {% if item.reserva.productos.first.imagen %}
+                                        <img src="{{ item.reserva.productos.first.imagen.url }}" alt="Película" class="resumen-imagen">
+                                    {% else %}
+                                        <div class="d-flex align-items-center justify-content-center bg-light rounded" style="width: 80px; height: 80px; color: #888;">
+                                            IMG
+                                        </div>
+                                    {% endif %}
+                                    <div>
+                                        <h5 class="mb-1">Reserva #{{ item.reserva.id }}</h5>
+                                        <p class="mb-1"><small>Película: {% if item.reserva.productos.first %}{{ item.reserva.productos.first.titulo }}{% else %}No especificada{% endif %}</small></p>
+                                        <p class="mb-1"><small>Fecha: {{ item.reserva.fecha }} - {{ item.reserva.hora }}</small></p>
+                                        <p class="mb-1"><small>Personas: {{ item.reserva.personas }}</small></p>
+                                        <p class="mb-0"><small>Cantidad: {{ item.cantidad }}</small></p>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <strong>${{ item.subtotal }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                            <h4 class="mb-0">Total:</h4>
+                            <h4 class="mb-0">${{ total }}</h4>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <a href="{% url 'ver_carrito' %}" class="btn btn-outline-secondary w-100">
+                                <i class="bi bi-arrow-left me-2"></i>Volver al Carrito
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+        
+            <!-- Sección de Pago -->
+        <div class="payment-section mt-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="mb-4" style="color: black;">Pago con QR</h3>  <!-- Añadido mb-4 aquí -->
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <img src="{% static 'imagenes/avatar.jpg' %}" alt="QR Nequi" class="qr-image mb-2">
+                            <p class="text-muted">Nequi</p>
+                        </div>
+                        <div class="col-6">
+                            <img src="{% static 'imagenes/after.jpg' %}" alt="QR Bancolombia" class="qr-image mb-2">
+                            <p class="text-muted">Bancolombia</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <h3 class="mb-4" style="color: black;">Subir Comprobante</h3>
+                    <div class="mb-3">
+                        <label for="comprobante" class="form-label">Adjunta tu comprobante de pago</label>
+                        <input class="form-control" type="file" name="comprobante" id="comprobante" accept="image/*" required>
+                        <div class="form-text">Formatos aceptados: JPG, PNG (Máx. 5MB)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn btn-success btn-lg">
+                    <i class="bi bi-check-circle me-2"></i>Confirmar Pedido
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
 {% endblock %}

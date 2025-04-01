@@ -1,36 +1,44 @@
 {% extends 'base.html' %}
 
 {% block style %}
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
 <style>
     /* Estilos personalizados sin afectar Bootstrap */
     .contenedor-mensaje {
-    display: flex;
-    margin: 0 10px;
-    justify-content: center;
-    align-items: center;
-    height: 30vh; /* Ajuste dinámico */
-}
+        display: flex;
+        margin: 0 10px;
+        justify-content: center;
+        align-items: center;
+        height: 30vh; /* Ajuste dinámico */
+    }
 
-.mensaje-reserva {
-    background-color: rgba(255, 0, 0, 0.8); /* Rojo translúcido */
-    color: white;
-    padding: 15px 25px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease-in-out;
-}
+    .mensaje-reserva {
+        background-color: rgba(255, 0, 0, 0.8); /* Rojo translúcido */
+        color: white;
+        padding: 15px 25px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease-in-out;
+    }
 
-.mensaje-reserva:hover {
-    transform: scale(1.05);
-}
+    .mensaje-reserva:hover {
+        transform: scale(1.05);
+    }
 
     .custom-container {
         max-width: 900px;
         margin: 70px auto;
-        background: white;
+        background: black;
         padding: 25px;
         border-radius: 12px;
         box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
@@ -61,7 +69,7 @@
     }
 
     .custom-table tr:hover {
-        background-color: #f1f1f1;
+        background-color: #211e1ec0;
     }
 
     .custom-alert {
@@ -119,8 +127,10 @@
         </div>
     </div>
     {% endif %}
-    
-
-    
 </div>
+
+
+<!-- Carga del script de Bootstrap 5 con Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}
+

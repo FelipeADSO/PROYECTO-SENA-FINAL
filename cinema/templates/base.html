@@ -14,7 +14,7 @@
     <!-- Bootstrap Bundle con Popper (Necesario para dropdowns y navbar-toggler) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -115,11 +115,11 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         {% if not user.is_authenticated %}
-                            <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar sesión</a></li>
+                            <li><a class="dropdown-item" href="{% url 'login' %}">Iniciar Sesión</a></li>
                             <li><a class="dropdown-item" href="{% url 'register' %}">Registrarse</a></li>
                         {% else %}
-                            <li><button type="submit" class="dropdown-item" href="{% url 'perfil' %}">Perfil de Usuario</button></li>
-                            <li><button type="submit" class="dropdown-item" href="{% url 'historial' %}">Historial</button></li>
+                            <li><a class="dropdown-item" href="{% url 'perfil' %}">Perfil De Usuario</a></li>
+                            <li><a class="dropdown-item" href="{% url 'historial' %}">Historial</a></li>
                             <li>
                                 <form method="post" action="{% url 'logout' %}">
                                     {% csrf_token %}

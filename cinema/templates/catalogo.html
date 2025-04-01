@@ -3,7 +3,9 @@
 
 {% block style %}
 <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Bundle con Popper (Necesario para dropdowns y navbar-toggler) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
   .modal-content {
@@ -77,6 +79,25 @@
   .close-modal:hover {
     color: #dc3545;
   }
+
+  .portfolio-item img {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .portfolio-item img {
+      height: 300px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .portfolio-item img {
+      height: 250px;
+    }
+  }
 </style>
 {% endblock %}
 
@@ -108,7 +129,6 @@
   </div>
 </section>
 
-
 {% for contenido in contenidos %}
 <div class="portfolio-modal modal fade" id="portfolioModal{{ contenido.id }}" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -138,7 +158,9 @@
 </div>
 {% endfor %}
 
-<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="{% static 'js/scripts.js' %}"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script> 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/scripts.js"></script>
+  <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 {% endblock %}

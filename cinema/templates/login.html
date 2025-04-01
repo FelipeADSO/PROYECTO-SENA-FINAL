@@ -7,14 +7,16 @@
         body {
             background: url('{% static "imagenes/cine-bg.jpg" %}') no-repeat center center fixed;
             background-size: cover;
+            padding-top: 80px; /* Añadido para espacio del navbar */
         }
 
         .cine-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            min-height: calc(100vh - 80px); /* Ajuste para altura total */
             padding: 20px;
+            margin-top: 40px; /* Espacio adicional debajo del navbar */
         }
 
         .cine-card {
@@ -25,8 +27,10 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             color: white;
             width: 400px;
+            margin-top: 30px; /* Margen superior adicional */
         }
 
+        /* Resto de tus estilos se mantienen igual */
         .cine-input {
             background: rgba(255, 255, 255, 0.2);
             border: none;
@@ -68,45 +72,55 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container cine-container">
-        <div class="cine-card">
-            <h2 class="text-center mb-4">Bienvenido al Cine</h2>
-
-            {% if messages %}
-                <div class="alert alert-warning">
-                    {% for message in messages %}
-                        <div class="{{ message.tags }}">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            <form method="post" action="{% url 'login' %}">
-                {% csrf_token %}
-
-                <div class="mb-3">
-                    <input type="text" name="username" class="form-control cine-input" placeholder="Ingrese su usuario" required>
-                </div>
-
-                <div class="mb-3">
-                    <input type="password" name="password" class="form-control cine-input" placeholder="Ingrese su contraseña" required>
-                </div>
-
-                <div class="mb-3 text-center">
-                    <a href="{% url 'restablecer' %}" class="cine-link">¿Olvidaste tu contraseña?</a>
-                </div>
-
-                <button type="submit" class="btn cine-btn w-100">Ingresar</button>
-
-                <p class="text-center mt-3">
-                    ¿No tienes cuenta? <a href="{% url 'register' %}" class="cine-link">Regístrate aquí</a>
-                </p>
-            </form>
-        </div>
+<div class="container cine-container">
+    <div class="cine-card">
+        <h2 class="text-center mb-4">Iniciar Sesión</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario</label>
+                <input type="text" class="form-control cine-input" id="username" name="username" required>
+            </div>
+            <div class="mb-3 position-relative">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control cine-input" id="password" name="password" required>
+                <i class="fas fa-eye-slash password-toggle position-absolute end-0 top-50 translate-middle-y me-3" 
+                   style="cursor: pointer; margin-top: 10px;" 
+                   onclick="togglePassword('password')"></i>
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn cine-btn">Ingresar</button>
+            </div>
+            <div class="mt-3 text-center">
+                <a href="{% url 'restablecer' %}" class="cine-link">¿Olvidaste tu contraseña?</a>
+            </div>
+            <div class="mt-2 text-center">
+                <span class="text-white">¿No tienes cuenta? </span>
+                <a href="{% url 'register' %}" class="cine-link">Regístrate aquí</a>
+            </div>
+        </form>
     </div>
+</div>
 
-    <!-- Archivos JS optimizados -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'js/scripts.js' %}"></script>
-    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+<script>
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const icon = event.currentTarget;
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    } else {
+        input.type = "password";
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    }
+}
+</script>
+
+<!-- Archivos JS optimizados -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/scripts.js' %}"></script>
+<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 {% endblock %}
