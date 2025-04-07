@@ -1,78 +1,94 @@
-
+{% extends 'base.html' %}
 {% load static %}
 
-
-{% block style %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-{% endblock %}
-
+{% block title %}Carrito de Compras{% endblock %}
 
 {% block content %}
-<style>
-     .fondito {
-    position: relative;
-    background-image: url("{% static 'imagenes/25335.jpg' %}");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-
-
-.reset-container {
-    position: relative;
-    z-index: 2; /* Asegura que el contenido esté por encima del fondo */
-}
-    .password-container {
-        background: #222;
-        padding: 30px;
-        border-radius: 8px;
-        text-align: center;
-        max-width: 400px;
-        margin: auto;
-    }
-
-    .password-container h2 {
-        margin-bottom: 15px;
-        color: #fff;
-    }
-
-    .password-container .form-control {
-        background: #333;
-        border: 1px solid #444;
-        color: white;
-    }
-
-    .password-container .form-control:focus {
-        border-color: #dc3545;
-        box-shadow: none;
-    }
-
-    .password-container .btn-danger {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border-radius: 5px;
-        transition: background 0.3s ease;
-    }
-
-    .password-container .btn-danger:hover {
-        background: #bb2d3b;
-    }
-
-</style>
-<div class="fondito">
-    <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="password-container">
-            <h2>Ingresa tu nueva contraseña</h2>
-            <form method="POST">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <input type="password" class="form-control" name="password" placeholder="Nueva contraseña" required>
-                </div>
-                <button type="submit" class="btn btn-danger">Guardar</button>
-            </form>
+<link rel="stylesheet" href="{% static 'css/carrito.css' %}">
+<div class="carrito-container">
+    <h1 class="carrito-titulo">Tu Carrito de Compras</h1>
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
         </div>
+        {% endfor %}
     </div>
-</div>    
+    {% endif %}
+    
+    {% if carrito_items %}
+        <div class="table-responsive">
+            <table class="carrito-tabla" style="color: #333 !important;">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio por persona</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in carrito_items %}
+                    <tr>
+                        <td>
+                            <div class="producto-info" style="color: #333 !important;">
+                                {% with pelicula=item.reserva.productos.first %}
+                                    {% if pelicula and pelicula.imagen %}
+                                        <img src="{{ pelicula.imagen.url }}" alt="{{ pelicula.titulo }}" class="producto-imagen">
+                                    {% endif %}
+                                    <div class="reserva-detalles" style="color: #333 !important;">
+                                        <strong>Película:</strong> {% if pelicula %}{{ pelicula.titulo }}{% else %}Sin película{% endif %}<br>
+                                        <strong>Fecha:</strong> {{ item.reserva.fecha|date:"d/m/Y" }}<br>
+                                        <strong>Hora:</strong> {{ item.reserva.hora|time:"H:i" }}
+                                    </div>
+                                {% endwith %}
+                            </div>
+                        </td>
+                        <td>$12000</td> 
+                        <td>
+                            <form method="POST" action="{% url 'actualizar_carrito' item.id %}" class="cantidad-control">
+                                {% csrf_token %}
+                                <input type="number" name="cantidad" value="{{ item.reserva.personas }}" min="1" class="cantidad-input">
+                                <button type="submit" class="btn btn-outline btn-sm">
+                                    Actualizar
+                                </button>
+                            </form>
+                        </td>
+                        <td>${{ item.subtotal }}</td>
+                        <td>
+                            <a href="{% url 'eliminar_item' item.id %}" class="btn btn-danger btn-sm">
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="carrito-total">Total:</td>
+                        <td colspan="2" class="carrito-total">${{ total }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        
+        <div class="carrito-acciones">
+            <a href="{% url 'reserva' %}" class="btn btn-danger">
+                Reservar otra pelicula
+            </a>
+            <a href="{% url 'pasarela' %}" class="btn btn-danger">
+                Proceder al pago
+            </a>
+        </div>
+    {% else %}
+        <div class="carrito-vacio" style="color: #333;">
+            Tu carrito está vacío. <a href="{% url 'cartelera' %}">Empieza a reservar</a>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}
+
+

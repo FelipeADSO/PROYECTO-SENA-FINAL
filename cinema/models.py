@@ -177,6 +177,11 @@ class ContenidoCine(models.Model):
         ('Terror', 'Terror'),
         ('Documentales', 'Documentales'),
     ]
+    FORMATOS = [
+        ('2D', '2D'),
+        ('3D', '3D'),
+        ('2D/3D', 'Disponible en ambos formatos'),
+    ]
     
     nombre = models.CharField(max_length=100)
     sinopsis = models.TextField()
@@ -187,6 +192,20 @@ class ContenidoCine(models.Model):
     fecha_lanzamiento = models.DateField(null=True, blank=True)
     fecha_estreno = models.DateField(null=True, blank=True)  # Nuevo campo
     prioridad = models.IntegerField(default=0)
+    formato = models.CharField(
+        max_length=5,
+        choices=FORMATOS,
+        default='2D',
+        verbose_name="Formato de proyección"
+    )
+    funcion_2d = models.BooleanField(
+        default=False,
+        verbose_name="Disponible en 2D"
+    )
+    funcion_3d = models.BooleanField(
+        default=False,
+        verbose_name="Disponible en 3D"
+    )
 
     def save(self, *args, **kwargs):
         # Convertir URL de YouTube a formato embed
@@ -196,6 +215,14 @@ class ContenidoCine(models.Model):
         elif 'youtu.be/' in self.video_promocional:
             video_id = self.video_promocional.split('youtu.be/')[1]
             self.video_promocional = f'https://www.youtube.com/embed/{video_id}'
+        
+    # Actualizar el campo formato basado en las funciones disponibles
+        if self.funcion_2d and self.funcion_3d:
+            self.formato = '2D/3D'
+        elif self.funcion_2d:
+            self.formato = '2D'
+        elif self.funcion_3d:
+            self.formato = '3D'
         
         super().save(*args, **kwargs)
     

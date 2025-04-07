@@ -1,10 +1,11 @@
-{% extends 'base.html' %}
+<!-- {% extends 'base.html' %}
 {% load static %}
 
 {% block style %}
 <link href="{% static 'css/style.css' %}" rel="stylesheet"/>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Bundle con Popper (Necesario para dropdowns y navbar-toggler) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
   /* Estilos del cuerpo de las modales */
@@ -22,7 +23,7 @@
     top: 15px;
     right: 15px;
     cursor: pointer;
-  }
+}
   .modal-body h2 {
     font-size: 24px;
     font-weight: bold;
@@ -68,15 +69,16 @@
     font-size: 16px;
   }
   .descripcion-pelicula {
-    text-align: justify;
+  text-align: justify;
   }
+  
 </style>
 {% endblock %}
 
 {% block content %}
   
-  {% for contenido in contenidos %}
-  <div class="portfolio-modal modal fade" id="portfolioModal{{ contenido.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+{% for pelicula in peliculas %}
+  <div class="portfolio-modal modal fade" id="portfolioModal{{ pelicula.id }}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
              <!-- Botón de cierre con la X mejorada -->
@@ -87,15 +89,15 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
                         <div class="modal-body">
-                            <h2 style="color: #fff;">{{ contenido.nombre }}</h2>
+                            <h2 style="color: #fff;">{{ pelicula.titulo }}</h2>
                             <p class="item-intro text-muted"></p>
-                            <iframe class="d-block mx-auto" width="560" height="315" src="{{ contenido.video_promocional }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                            <p class="descripcion-pelicula" style="color: #fff;">{{ contenido.sinopsis }}</p>
-                            <p style="color: #fff; font-weight: bold;">Género: {{ contenido.genero }}</p>
+                            <iframe class="d-block mx-auto" width="560" height="315" src="{{ pelicula.trailer_url }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <p class="descripcion-pelicula" style="color: #fff;">{{ pelicula.descripcion }}</p>
+                            <p style="color: #fff; font-weight: bold;">Horario: {{ pelicula.horario }}</p>
                             <ul class="list-inline">
                                 <div class="con" style="display: flex; flex-direction: row; justify-content: center; color: #fff;">
                                 {% for i in "12345" %}
-                                    {% if forloop.counter <= contenido.puntuacion %}
+                                    {% if forloop.counter <= pelicula.calificacion %}
                                     <li><i class="fa fa-star check"></i></li>
                                     {% else %}
                                     <li><i class="fa fa-star"></i></li>
@@ -103,7 +105,7 @@
                                 {% endfor %}
                                 </div>
                                 <li>
-                                    <strong style="color: #fff;">Fecha de Estreno: {{ contenido.fecha_estreno|date:"d M Y" }}</strong>
+                                    <strong style="color: #fff;">Categoria: {{ pelicula.categoria }}</strong>
                                 </li>
                             </ul>
                             <button class="btn btn-danger btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
@@ -123,34 +125,39 @@
   <section class="page-section" style="background-color: rgb(10, 10, 10);" id="portfolio">
       <div class="container">
           <div class="text-center">
-              <h2 class="section-heading" style="color: #fff;">Películas De Estreno</h2>
+              <h2 class="section-heading" style="color: #fff;">Cartelera De Esta Semana</h2>
               <h3 class="section-subheading text-muted"></h3>
           </div>
           <div class="row">
-              {% for contenido in contenidos %}
+              {% for pelicula in peliculas %}
               <div class="parra col-lg-4 col-sm-6 mb-4">
                   <div class="portfolio-item">
-                      <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal{{ contenido.id }}">
+                      <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal{{ pelicula.id }}">
                           <div class="portfolio-hover" style="background-color: rgba(255, 0, 0, 0.9);">
                               <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
                           </div>
-                          <img class="img-fluid" src="{{ contenido.imagen_portada.url }}" alt="{{ contenido.nombre }}"/>
+                          <img class="img-fluid" src="{{ pelicula.imagen.url }}" alt="{{ pelicula.titulo }}"/>
                       </a>
                       <div class="portfolio-caption">
-                          <div class="portfolio-caption-heading" style="color: #000">{{ contenido.nombre }}</div>
+                          <div class="portfolio-caption-heading" style="color: #000">{{ pelicula.titulo }}</div>
                       </div>
                   </div>
               </div>
               {% endfor %}
           </div>
       </div> 
+        <div class="container text-center mt-4" >
+        <a href="{% url 'reserva' %}" style="background-color:  rgba(255, 0, 0, 0.9);" class="btn btn-reservar">
+            <i  class="fas fa-ticket-alt me-2"></i> Reservar Peliculas
+        </a>
+        </div>
   </section>
 
-
+  <!-- Botón de Reservar centrado -->
   
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script> 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="js/scripts.js"></script>
   <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-{% endblock %}
+{% endblock %} 
